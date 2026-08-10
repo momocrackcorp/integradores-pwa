@@ -32,7 +32,7 @@
 </div></div>
 <div id="acercaDe" class="acerca"><div class="acerca-contenido"><div class="acerca-titulo">ACERCA DE</div><div class="pacman-pista"><div class="bolitas"></div><div class="pacman"><div class="pacman-arriba"></div><div class="pacman-abajo"></div><div class="pacman-ojo"></div></div></div><div class="oa">OA MMXXVI</div><div class="waka">WAKAWAKAWAKAWAKAWAKA</div><button class="cerrar-acerca" onclick="cerrarAcerca()">CERRAR</button></div></div>
 <script>
-const API_URL='https://script.google.com/macros/s/AKfycbzitadXAFr2bbitz6P0ojYaYNCRWmasKabQXu4i8029p5ipiqQynNsIFQv3Ay8QVqrGjg/exec';
+const API_URL='https://script.google.com/macros/s/AKfycbwN6KhBE2LSPOM9K1o8kKrH7_qCYsZ_YPVrPfcbMZTPE2k2pYIJ_Uc_uOZqC28xL9pZtQ/exec';
 const CLAVE_COLA='integradores_cola_pwa_v1';let sincronizando=false;
 function generarId(){return (window.crypto&&window.crypto.randomUUID)?window.crypto.randomUUID():Date.now().toString(36)+'-'+Math.random().toString(36).slice(2)}
 function leerCola(){try{return JSON.parse(localStorage.getItem(CLAVE_COLA)||'[]')}catch(e){return[]}}
