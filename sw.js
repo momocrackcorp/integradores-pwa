@@ -1,9 +1,11 @@
-const CACHE_NAME = 'integradores-pwa-v1';
+const CACHE_NAME = 'integradores-pwa-v2';
 const APP_SHELL = [
   './',
   './index.html',
   './manifest.json',
-  './icon.svg'
+  './icon.svg',
+  './icon-192.png',
+  './logo-masisa.png'
 ];
 
 self.addEventListener('install', event => {
