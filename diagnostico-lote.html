@@ -1,0 +1,12 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Diagnóstico lote</title><style>body{font-family:Arial;padding:24px}pre{white-space:pre-wrap;word-break:break-word;background:#eee;padding:12px;border-radius:8px}</style></head><body><h2>Diagnóstico lote Integradores</h2><div id="estado">Probando...</div><pre id="detalle"></pre><script>
+const API_URL='https://script.google.com/macros/s/AKfycbwN6KhBE2LSPOM9K1o8kKrH7_qCYsZ_YPVrPfcbMZTPE2k2pYIJ_Uc_uOZqC28xL9pZtQ/exec';
+const lote={id:'diag-'+Date.now(),fechaTelefono:new Date().toISOString(),datos:[{tipo:'NO_EXISTE',valor:'1'}]};
+const cb='diagcb_'+Date.now();
+const s=document.createElement('script');
+const url=API_URL+'?api=guardar&callback='+encodeURIComponent(cb)+'&lote='+encodeURIComponent(JSON.stringify(lote))+'&t='+Date.now();
+document.getElementById('detalle').textContent=url;
+const timer=setTimeout(()=>{document.getElementById('estado').textContent='SIN RESPUESTA después de 20 segundos';},20000);
+window[cb]=r=>{clearTimeout(timer);document.getElementById('estado').textContent='RESPUESTA RECIBIDA';document.getElementById('detalle').textContent=JSON.stringify(r);s.remove();delete window[cb];};
+s.onerror=()=>{clearTimeout(timer);document.getElementById('estado').textContent='ERROR AL CARGAR SCRIPT';};
+s.src=url;document.body.appendChild(s);
+</script></body></html>
