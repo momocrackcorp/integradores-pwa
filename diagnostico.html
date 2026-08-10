@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Diagnóstico Integradores</title>
+<style>body{font-family:Arial,sans-serif;padding:24px;background:#0d6b38;color:#fff}#r{margin-top:20px;padding:18px;background:#fff;color:#111;border-radius:12px;font-weight:700}</style>
+</head>
+<body>
+<h2>Diagnóstico JSONP</h2>
+<div id="r">Esperando respuesta de Apps Script…</div>
+<script>
+window.diagnosticoIntegradores=function(respuesta){document.getElementById('r').textContent='RESPUESTA RECIBIDA: '+JSON.stringify(respuesta);};
+setTimeout(function(){if(document.getElementById('r').textContent.indexOf('Esperando')===0){document.getElementById('r').textContent='SIN RESPUESTA después de 15 segundos';}},15000);
+</script>
+<script src="https://script.google.com/macros/s/AKfycbwN6KhBE2LSPOM9K1o8kKrH7_qCYsZ_YPVrPfcbMZTPE2k2pYIJ_Uc_uOZqC28xL9pZtQ/exec?api=guardar&callback=diagnosticoIntegradores"></script>
+</body>
+</html>
