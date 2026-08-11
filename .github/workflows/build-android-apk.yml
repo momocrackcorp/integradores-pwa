@@ -9,7 +9,7 @@ on:
       - '.github/workflows/build-android-apk.yml'
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build:
@@ -43,7 +43,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y imagemagick
 
-      - name: Generate Android launcher icons
+      - name: Generate legacy Android launcher icons
         run: |
           mkdir -p android/app/src/main/res/mipmap-mdpi android/app/src/main/res/mipmap-hdpi android/app/src/main/res/mipmap-xhdpi android/app/src/main/res/mipmap-xxhdpi android/app/src/main/res/mipmap-xxxhdpi
           convert android-icon-source.svg -resize 48x48 android/app/src/main/res/mipmap-mdpi/ic_launcher.png
@@ -60,9 +60,27 @@ jobs:
       - name: Build debug APK
         run: gradle -p android assembleDebug --stacktrace
 
-      - name: Upload APK
+      - name: Prepare distributable APK
+        run: cp android/app/build/outputs/apk/debug/app-debug.apk Integradores.apk
+
+      - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: Integradores-APK
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          path: Integradores.apk
           if-no-files-found: error
+
+      - name: Publish GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="Prueba_${GITHUB_RUN_NUMBER}"
+          TITLE="Integradores Prueba ${GITHUB_RUN_NUMBER}"
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" Integradores.apk --clobber
+          else
+            gh release create "$TAG" Integradores.apk \
+              --title "$TITLE" \
+              --notes "APK de prueba generado automáticamente por GitHub Actions. Incluye el icono adaptativo para Android." \
+              --latest
+          fi
