@@ -5,6 +5,7 @@ on:
   push:
     paths:
       - 'android/**'
+      - 'icon-192.png'
       - '.github/workflows/build-android-apk.yml'
 
 permissions:
@@ -36,6 +37,31 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.7'
+
+      - name: Generate Android launcher icons
+        run: |
+          python3 -m pip install --quiet pillow
+          python3 - <<'PY'
+          from pathlib import Path
+          from PIL import Image
+
+          source = Image.open('icon-192.png').convert('RGBA')
+          sizes = {
+              'mipmap-mdpi': 48,
+              'mipmap-hdpi': 72,
+              'mipmap-xhdpi': 96,
+              'mipmap-xxhdpi': 144,
+              'mipmap-xxxhdpi': 192,
+          }
+
+          base = Path('android/app/src/main/res')
+          for folder, size in sizes.items():
+              target = base / folder
+              target.mkdir(parents=True, exist_ok=True)
+              icon = source.resize((size, size), Image.Resampling.LANCZOS)
+              icon.save(target / 'ic_launcher.png')
+              icon.save(target / 'ic_launcher_round.png')
+          PY
 
       - name: Build debug APK
         run: gradle -p android assembleDebug --stacktrace
