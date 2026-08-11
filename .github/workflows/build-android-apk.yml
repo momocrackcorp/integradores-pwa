@@ -43,8 +43,9 @@ jobs:
           python3 -m pip install --quiet pillow
           python3 - <<'PY'
           from pathlib import Path
-          from PIL import Image
+          from PIL import Image, ImageFile
 
+          ImageFile.LOAD_TRUNCATED_IMAGES = True
           source = Image.open('icon-192.png').convert('RGBA')
           sizes = {
               'mipmap-mdpi': 48,
