@@ -123,10 +123,12 @@ input::placeholder{font-size:19px;font-weight:600;color:#aaa}
 </div>
 
 <script>
-const API_URL='https://floral-cherry-8db2.momocrackcorp.workers.dev/';
+const API_INTEGRADORES='https://floral-cherry-8db2.momocrackcorp.workers.dev/';
+const API_NIVELES='https://minicierre.momocrackcorp.workers.dev/';
 const CLAVE_COLA='integradores_cola_pwa_v1';
 const ALTURA_UTIL_CM=740;
 
+// Factores ocultos de interfaz. La edición final debe quedar protegida en backend/configuración.
 const TANQUES=[
   {tag:'D62',factor:93,familia:'D62-D70'},
   {tag:'D64',factor:93,familia:'D62-D70'},
@@ -256,7 +258,8 @@ function resetearCola(){
 }
 
 async function enviarApi(lote){
-  const url=API_URL+'?lote='+encodeURIComponent(JSON.stringify(lote))+'&t='+Date.now();
+  const baseUrl=lote && lote.modulo==='NIVELES_TANQUES' ? API_NIVELES : API_INTEGRADORES;
+  const url=baseUrl+'?lote='+encodeURIComponent(JSON.stringify(lote))+'&t='+Date.now();
   const respuesta=await fetch(url,{method:'GET',cache:'no-store'});
   let datos;try{datos=await respuesta.json()}catch(e){throw new Error('Respuesta inválida del servidor')}
   if(!respuesta.ok||!datos||!datos.ok)throw new Error((datos&&datos.error)||('Error HTTP '+respuesta.status));
