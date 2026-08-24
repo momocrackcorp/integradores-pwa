@@ -20,7 +20,7 @@ body{margin:0;padding:6px;min-height:100vh;font-family:Arial,Helvetica,sans-seri
 .logo{display:block;width:100%;max-width:185px;height:auto;margin:0 auto}
 .titulo{margin:-2px 0 0;font-size:28px;line-height:1;font-weight:900;color:#0d6b38}
 .subtitulo{margin-top:2px;font-size:15px;line-height:1.1;font-weight:700;color:#555}
-.tabs{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid #d8e5dc;background:#fff}
+.tabs{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid #d8e5dc;background:#fff}
 .tab{height:48px;border:0;border-bottom:4px solid transparent;background:#fff;color:#66796c;font-size:14px;font-weight:900}
 .tab.activa{color:#0d6b38;border-bottom-color:#15934e;background:#f6faf7}
 .panel{display:none}.panel.activo{display:block}
@@ -71,6 +71,7 @@ input::placeholder{font-size:19px;font-weight:600;color:#aaa}
     <button id="tabIntegradores" class="tab activa" onclick="mostrarPanel('integradores')">Integradores</button>
     <button id="tabNiveles" class="tab" onclick="mostrarPanel('niveles')">Niveles</button>
     <button id="tabEstado" class="tab" onclick="mostrarPanel('estado')">Estado</button>
+    <button id="tabConfig" class="tab" onclick="mostrarPanel('config')">Config 🔒</button>
   </nav>
 
   <section id="panelIntegradores" class="panel activo">
@@ -91,6 +92,13 @@ input::placeholder{font-size:19px;font-weight:600;color:#aaa}
       <div id="listaTanques"></div>
       <button class="boton" onclick="guardarNiveles()">GUARDAR MEDICIONES</button>
       <div id="mensajeNiveles" class="mensaje"></div>
+    </div>
+  </section>
+
+  <section id="panelConfig" class="panel">
+    <div class="contenido">
+      <div class="info"><b>Configuración protegida.</b> Los factores de aforo y parámetros de estanques no están disponibles para edición de operador. Su edición se habilitará únicamente mediante autorización de administrador en el backend.</div>
+      <div class="estado online"><div class="punto"></div><span>ACCESO ADMINISTRADOR REQUERIDO</span></div>
     </div>
   </section>
 
@@ -116,10 +124,9 @@ input::placeholder{font-size:19px;font-weight:600;color:#aaa}
 
 <script>
 const API_URL='https://floral-cherry-8db2.momocrackcorp.workers.dev/';
-const CLAVE_COLA='integradores_cola_pwa_v2';
+const CLAVE_COLA='integradores_cola_pwa_v1';
 const ALTURA_UTIL_CM=740;
 
-// Factores ocultos de interfaz. La edición final debe quedar protegida en backend/configuración.
 const TANQUES=[
   {tag:'D62',factor:93,familia:'D62-D70'},
   {tag:'D64',factor:93,familia:'D62-D70'},
@@ -135,7 +142,7 @@ const TANQUES=[
 let sincronizando=false;
 
 function mostrarPanel(nombre){
-  ['integradores','niveles','estado'].forEach(x=>{
+  ['integradores','niveles','estado','config'].forEach(x=>{
     document.getElementById('panel'+x[0].toUpperCase()+x.slice(1)).classList.toggle('activo',x===nombre);
     document.getElementById('tab'+x[0].toUpperCase()+x.slice(1)).classList.toggle('activa',x===nombre);
   });
@@ -161,7 +168,7 @@ function limpiarIntegradores(){['resina','secuestrante','f900','emulsion1','emul
 function guardarIntegradores(){
   const datos=obtenerDatosIntegradores();
   if(!datos.length){mostrarMensaje('mensajeIntegradores','Debe ingresar al menos un valor.',false);return}
-  if(datos.some(d=>!/^\\d+$/.test(d.valor))){mostrarMensaje('mensajeIntegradores','Ingrese solamente números.',false);return}
+  if(datos.some(d=>!/^\d+$/.test(d.valor))){mostrarMensaje('mensajeIntegradores','Ingrese solamente números.',false);return}
   encolar({modulo:'INTEGRADORES',datos});
   limpiarIntegradores();
   mostrarMensaje('mensajeIntegradores',navigator.onLine?'✓ Guardado. Sincronizando...':'✓ Guardado en el teléfono. Pendiente de sincronizar.',navigator.onLine?true:'pendiente');
@@ -191,7 +198,7 @@ function renderTanques(){
 
 function calcularNivel(i,el){
   const t=TANQUES[i];
-  el.value=el.value.replace(/\\D/g,'').slice(0,3);
+  el.value=el.value.replace(/\D/g,'').slice(0,3);
   const pct=document.getElementById('pct_'+t.tag),lit=document.getElementById('lit_'+t.tag),est=document.getElementById('estado_'+t.tag);
   est.className='estado-tanque';
   if(el.value===''){pct.textContent='—';lit.textContent='—';est.textContent='Sin lectura';return}
@@ -297,7 +304,7 @@ window.addEventListener('load',()=>{
   actualizarReloj();setInterval(actualizarReloj,1000);
   setInterval(()=>{if(navigator.onLine&&leerCola().length&&!sincronizando)sincronizarPendientes()},10000);
   actualizarEstado();
-  try{const p=sessionStorage.getItem('integradores_panel');if(['integradores','niveles','estado'].includes(p))mostrarPanel(p)}catch(e){}
+  try{const p=sessionStorage.getItem('integradores_panel');if(['integradores','niveles','estado','config'].includes(p))mostrarPanel(p)}catch(e){}
   if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js');
   if(navigator.onLine)setTimeout(sincronizarPendientes,1200);
 });
