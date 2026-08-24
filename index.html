@@ -12,44 +12,295 @@
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
 <style>
-*{box-sizing:border-box}html{background:#084c28}body{margin:0;padding:6px;min-height:100vh;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(180deg,#0d6b38 0%,#084c28 100%);color:#222}.contenedor{width:100%;max-width:560px;margin:0 auto;background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,.25)}.cabecera{padding:7px 16px;text-align:center;background:linear-gradient(180deg,#fff 0%,#eef5f0 100%);border-bottom:4px solid #0d6b38}.logo{display:block;width:100%;max-width:185px;height:auto;margin:0 auto}.titulo{margin:-2px 0 0;font-size:28px;line-height:1;font-weight:900;color:#0d6b38}.subtitulo{margin-top:2px;font-size:15px;line-height:1.1;font-weight:700;color:#555}.contenido{padding:9px 15px 13px}.grupo{margin-bottom:7px}label{display:block;margin-bottom:3px;font-size:18px;line-height:1.05;font-weight:900}input{width:100%;height:58px;padding:6px 13px;font-size:29px;font-weight:900;color:#111;background:#fafafa;border:2px solid #b4c2b7;border-radius:13px}input:focus{outline:none;background:#fff;border-color:#0d6b38;box-shadow:0 0 0 3px rgba(13,107,56,.14)}input::placeholder{font-size:19px;font-weight:600;color:#aaa}.boton{width:100%;height:62px;margin-top:2px;border:0;border-radius:14px;background:linear-gradient(180deg,#15934e 0%,#0d6b38 100%);color:#fff;font-size:26px;font-weight:900;box-shadow:0 4px 12px rgba(13,107,56,.28)}.boton:active{transform:scale(.98)}#mensaje{min-height:26px;margin-top:10px;text-align:center;font-size:17px;font-weight:900}.ok{color:#0d6b38}.error{color:#c62828}.pendiente{color:#c77800}.estado{display:flex;justify-content:center;align-items:center;gap:7px;margin-top:7px;padding:8px;border-radius:12px;font-size:14px;font-weight:900;background:#f3f3f3}.punto{width:11px;height:11px;border-radius:50%}.online .punto{background:#15934e}.offline .punto{background:#d32f2f}.sincronizando .punto{background:#e69a00}.reset{width:100%;height:38px;margin-top:6px;border:1px solid #c9c9c9;border-radius:10px;background:#f5f5f5;color:#555;font-size:14px;font-weight:900}.reset:active{transform:scale(.99);background:#ececec}.reloj{margin-top:10px;padding:8px;text-align:center;background:#eef5f0;border:1px solid #d3e1d6;border-radius:13px}#horaActual{font-size:28px;line-height:1;font-weight:900;letter-spacing:2px;color:#0d6b38}#fechaActual{margin-top:3px;font-size:13px;font-weight:700;color:#555}.pie{margin-top:5px;padding:5px;text-align:center;font-size:12px;font-weight:800;color:#777;user-select:none}.acerca{display:none;position:fixed;inset:0;padding:20px;align-items:center;justify-content:center;background:rgba(0,0,0,.9);z-index:99999}.acerca-contenido{width:100%;max-width:460px;padding:24px 20px;text-align:center;background:#050505;border:4px solid #ffe500;border-radius:22px}.acerca-titulo{margin-bottom:18px;font-size:29px;font-weight:900;color:#ffe500}.pacman-pista{position:relative;width:100%;height:88px;overflow:hidden;margin:10px 0 20px;background:#000;border-top:3px solid #193cff;border-bottom:3px solid #193cff}.bolitas{position:absolute;top:50%;left:15px;right:15px;height:12px;transform:translateY(-50%);background-image:radial-gradient(circle,#fff 0,#fff 4px,transparent 5px);background-size:32px 12px;background-repeat:repeat-x}.pacman{position:absolute;top:50%;left:-65px;width:54px;height:54px;transform:translateY(-50%);animation:caminarPacman 5s linear infinite}.pacman-arriba,.pacman-abajo{position:absolute;left:0;width:54px;height:27px;background:#ffe500}.pacman-arriba{top:0;border-radius:54px 54px 0 0;transform-origin:center bottom;animation:bocaArriba .22s infinite alternate}.pacman-abajo{bottom:0;border-radius:0 0 54px 54px;transform-origin:center top;animation:bocaAbajo .22s infinite alternate}.pacman-ojo{position:absolute;top:10px;left:29px;width:7px;height:7px;border-radius:50%;background:#111;z-index:5}@keyframes caminarPacman{0%{left:-65px}100%{left:calc(100% + 20px)}}@keyframes bocaArriba{from{transform:rotate(0)}to{transform:rotate(-38deg)}}@keyframes bocaAbajo{from{transform:rotate(0)}to{transform:rotate(38deg)}}.oa{font-size:27px;font-weight:900;letter-spacing:4px;color:#fff}.waka{margin-top:13px;font-size:17px;font-weight:900;color:#ffe500;animation:waka .55s infinite alternate}@keyframes waka{from{opacity:.5}to{opacity:1}}.cerrar-acerca{width:100%;height:58px;margin-top:22px;border:0;border-radius:12px;background:#ffe500;color:#111;font-size:20px;font-weight:900}
+*{box-sizing:border-box}
+html{background:#084c28}
+body{margin:0;padding:6px;min-height:100vh;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(180deg,#0d6b38 0%,#084c28 100%);color:#222}
+.contenedor{width:100%;max-width:560px;margin:0 auto;background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+.cabecera{padding:7px 16px;text-align:center;background:linear-gradient(180deg,#fff 0%,#eef5f0 100%);border-bottom:4px solid #0d6b38}
+.logo{display:block;width:100%;max-width:185px;height:auto;margin:0 auto}
+.titulo{margin:-2px 0 0;font-size:28px;line-height:1;font-weight:900;color:#0d6b38}
+.subtitulo{margin-top:2px;font-size:15px;line-height:1.1;font-weight:700;color:#555}
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid #d8e5dc;background:#fff}
+.tab{height:48px;border:0;border-bottom:4px solid transparent;background:#fff;color:#66796c;font-size:14px;font-weight:900}
+.tab.activa{color:#0d6b38;border-bottom-color:#15934e;background:#f6faf7}
+.panel{display:none}.panel.activo{display:block}
+.contenido{padding:9px 15px 13px}
+.grupo{margin-bottom:7px}
+label{display:block;margin-bottom:3px;font-size:18px;line-height:1.05;font-weight:900}
+input{width:100%;height:58px;padding:6px 13px;font-size:29px;font-weight:900;color:#111;background:#fafafa;border:2px solid #b4c2b7;border-radius:13px}
+input:focus{outline:none;background:#fff;border-color:#0d6b38;box-shadow:0 0 0 3px rgba(13,107,56,.14)}
+input::placeholder{font-size:19px;font-weight:600;color:#aaa}
+.boton{width:100%;height:62px;margin-top:2px;border:0;border-radius:14px;background:linear-gradient(180deg,#15934e 0%,#0d6b38 100%);color:#fff;font-size:24px;font-weight:900;box-shadow:0 4px 12px rgba(13,107,56,.28)}
+.boton:active{transform:scale(.98)}
+.mensaje{min-height:26px;margin-top:10px;text-align:center;font-size:17px;font-weight:900}
+.ok{color:#0d6b38}.error{color:#c62828}.pendiente{color:#c77800}
+.estado{display:flex;justify-content:center;align-items:center;gap:7px;margin-top:7px;padding:8px;border-radius:12px;font-size:14px;font-weight:900;background:#f3f3f3}
+.punto{width:11px;height:11px;border-radius:50%}.online .punto{background:#15934e}.offline .punto{background:#d32f2f}.sincronizando .punto{background:#e69a00}
+.reset{width:100%;height:38px;margin-top:6px;border:1px solid #c9c9c9;border-radius:10px;background:#f5f5f5;color:#555;font-size:14px;font-weight:900}
+.reloj{margin-top:10px;padding:8px;text-align:center;background:#eef5f0;border:1px solid #d3e1d6;border-radius:13px}
+#horaActual{font-size:28px;line-height:1;font-weight:900;letter-spacing:2px;color:#0d6b38}
+#fechaActual{margin-top:3px;font-size:13px;font-weight:700;color:#555}
+.pie{margin-top:5px;padding:5px;text-align:center;font-size:12px;font-weight:800;color:#777;user-select:none}
+.info{margin-bottom:10px;padding:9px 10px;border:1px solid #d3e1d6;border-left:4px solid #15934e;border-radius:12px;background:#f5faf6;color:#4d6255;font-size:12px;line-height:1.35}
+.tanque{margin-bottom:9px;padding:10px;border:1px solid #d8e5dc;border-radius:14px;background:#fff;box-shadow:0 2px 7px rgba(13,107,56,.05)}
+.tanque-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.tanque-tag{padding:5px 12px;border-radius:8px;background:linear-gradient(180deg,#15934e,#0d6b38);color:#fff;font-size:18px;font-weight:900}
+.tanque-factor{font-size:10px;color:#738179;font-weight:800}
+.nivel-row{display:grid;grid-template-columns:1fr 56px;gap:7px}
+.nivel-input{height:52px;background:#fff4b8;text-align:center;font-size:25px}
+.unidad{display:flex;align-items:center;justify-content:center;border:1px solid #d8e5dc;border-radius:11px;background:#f4f7f5;color:#68796e;font-weight:900}
+.resultados{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px}
+.resultado{padding:8px;border:1px solid #dce8e0;border-radius:10px;background:#f8fbf9;text-align:center}
+.resultado .k{font-size:9px;color:#728279;font-weight:900}.resultado .v{margin-top:3px;font-size:17px;color:#0d6b38;font-weight:900}
+.estado-tanque{margin-top:7px;padding:5px 7px;border-radius:7px;background:#fff8db;color:#886b00;font-size:10px}
+.estado-tanque.guardado{background:#edf8f0;color:#0d6b38}.estado-tanque.invalido{background:#fdecec;color:#b32626}
+.acerca{display:none;position:fixed;inset:0;padding:20px;align-items:center;justify-content:center;background:rgba(0,0,0,.9);z-index:99999}
+.acerca-contenido{width:100%;max-width:460px;padding:24px 20px;text-align:center;background:#050505;border:4px solid #ffe500;border-radius:22px}
+.acerca-titulo{margin-bottom:18px;font-size:29px;font-weight:900;color:#ffe500}.oa{font-size:27px;font-weight:900;letter-spacing:4px;color:#fff}.waka{margin-top:13px;font-size:17px;font-weight:900;color:#ffe500}.cerrar-acerca{width:100%;height:58px;margin-top:22px;border:0;border-radius:12px;background:#ffe500;color:#111;font-size:20px;font-weight:900}
 </style>
 </head>
 <body>
 <div class="contenedor">
-<div class="cabecera"><img class="logo" src="logo-masisa.png" alt="MASISA"><h1 class="titulo">Integradores</h1><div class="subtitulo">Registro de consumos</div></div>
-<div class="contenido">
-<div class="grupo"><label for="resina">Resina</label><input id="resina" type="tel" inputmode="numeric" pattern="[0-9]*" placeholder="Ingrese valor" autocomplete="off"></div>
-<div class="grupo"><label for="secuestrante">Secuestrante</label><input id="secuestrante" type="tel" inputmode="numeric" pattern="[0-9]*" placeholder="Ingrese valor" autocomplete="off"></div>
-<div class="grupo"><label for="f900">F900</label><input id="f900" type="tel" inputmode="numeric" pattern="[0-9]*" placeholder="Ingrese valor" autocomplete="off"></div>
-<div class="grupo"><label for="emulsion1">Emulsión 1 Quimtec</label><input id="emulsion1" type="tel" inputmode="numeric" pattern="[0-9]*" placeholder="Ingrese valor" autocomplete="off"></div>
-<div class="grupo"><label for="emulsion2">Emulsión 2 Quimtec</label><input id="emulsion2" type="tel" inputmode="numeric" pattern="[0-9]*" placeholder="Ingrese valor" autocomplete="off"></div>
-<button id="botonGuardar" class="boton" onclick="guardarLocal()">GUARDAR</button>
-<div id="mensaje"></div>
-<div id="estadoConexion" class="estado online"><div class="punto"></div><span id="textoEstado">EN LÍNEA — Pendientes: 0</span></div>
-<button class="reset" onclick="resetearCola()">RESET PENDIENTES</button>
-<div class="reloj"><div id="horaActual">--:--:--</div><div id="fechaActual">Cargando fecha...</div></div>
-<div class="pie" onclick="activarEasterEgg()">MASISA</div>
-</div></div>
-<div id="acercaDe" class="acerca"><div class="acerca-contenido"><div class="acerca-titulo">ACERCA DE</div><div class="pacman-pista"><div class="bolitas"></div><div class="pacman"><div class="pacman-arriba"></div><div class="pacman-abajo"></div><div class="pacman-ojo"></div></div></div><div class="oa">OA MMXXVI</div><div class="waka">WAKAWAKAWAKAWAKAWAKA</div><button class="cerrar-acerca" onclick="cerrarAcerca()">CERRAR</button></div></div>
+  <div class="cabecera">
+    <img class="logo" src="logo-masisa.png" alt="MASISA">
+    <h1 class="titulo">Integradores</h1>
+    <div class="subtitulo">Registro de consumos y niveles</div>
+  </div>
+
+  <nav class="tabs">
+    <button id="tabIntegradores" class="tab activa" onclick="mostrarPanel('integradores')">Integradores</button>
+    <button id="tabNiveles" class="tab" onclick="mostrarPanel('niveles')">Niveles</button>
+    <button id="tabEstado" class="tab" onclick="mostrarPanel('estado')">Estado</button>
+  </nav>
+
+  <section id="panelIntegradores" class="panel activo">
+    <div class="contenido">
+      <div class="grupo"><label for="resina">Resina</label><input id="resina" type="tel" inputmode="numeric" pattern="[0-9]*" placeholder="Ingrese valor" autocomplete="off"></div>
+      <div class="grupo"><label for="secuestrante">Secuestrante</label><input id="secuestrante" type="tel" inputmode="numeric" pattern="[0-9]*" placeholder="Ingrese valor" autocomplete="off"></div>
+      <div class="grupo"><label for="f900">F900</label><input id="f900" type="tel" inputmode="numeric" pattern="[0-9]*" placeholder="Ingrese valor" autocomplete="off"></div>
+      <div class="grupo"><label for="emulsion1">Emulsión 1 Quimtec</label><input id="emulsion1" type="tel" inputmode="numeric" pattern="[0-9]*" placeholder="Ingrese valor" autocomplete="off"></div>
+      <div class="grupo"><label for="emulsion2">Emulsión 2 Quimtec</label><input id="emulsion2" type="tel" inputmode="numeric" pattern="[0-9]*" placeholder="Ingrese valor" autocomplete="off"></div>
+      <button class="boton" onclick="guardarIntegradores()">GUARDAR INTEGRADORES</button>
+      <div id="mensajeIntegradores" class="mensaje"></div>
+    </div>
+  </section>
+
+  <section id="panelNiveles" class="panel">
+    <div class="contenido">
+      <div class="info"><b>Nivel terreno.</b> Ingrese centímetros enteros entre 0 y 740. El teléfono abrirá teclado numérico. Los cálculos mostrados son de apoyo; al sincronizar se enviará la lectura en cm al sistema central.</div>
+      <div id="listaTanques"></div>
+      <button class="boton" onclick="guardarNiveles()">GUARDAR MEDICIONES</button>
+      <div id="mensajeNiveles" class="mensaje"></div>
+    </div>
+  </section>
+
+  <section id="panelEstado" class="panel">
+    <div class="contenido">
+      <div id="estadoConexion" class="estado online"><div class="punto"></div><span id="textoEstado">EN LÍNEA — Pendientes: 0</span></div>
+      <button class="reset" onclick="resetearCola()">RESET PENDIENTES</button>
+      <div class="reloj"><div id="horaActual">--:--:--</div><div id="fechaActual">Cargando fecha...</div></div>
+      <div class="info" style="margin-top:10px">La cola local es común para Integradores y Niveles. Si el equipo queda sin señal, los registros permanecen en este dispositivo y se reintentan automáticamente.</div>
+      <div class="pie" onclick="activarEasterEgg()">MASISA</div>
+    </div>
+  </section>
+</div>
+
+<div id="acercaDe" class="acerca">
+  <div class="acerca-contenido">
+    <div class="acerca-titulo">ACERCA DE</div>
+    <div class="oa">OA MMXXVI</div>
+    <div class="waka">WAKAWAKAWAKAWAKAWAKA</div>
+    <button class="cerrar-acerca" onclick="cerrarAcerca()">CERRAR</button>
+  </div>
+</div>
+
 <script>
 const API_URL='https://floral-cherry-8db2.momocrackcorp.workers.dev/';
-const CLAVE_COLA='integradores_cola_pwa_v1';let sincronizando=false;
+const CLAVE_COLA='integradores_cola_pwa_v2';
+const ALTURA_UTIL_CM=740;
+
+// Factores ocultos de interfaz. La edición final debe quedar protegida en backend/configuración.
+const TANQUES=[
+  {tag:'D62',factor:93,familia:'D62-D70'},
+  {tag:'D64',factor:93,familia:'D62-D70'},
+  {tag:'D66',factor:93,familia:'D62-D70'},
+  {tag:'D68',factor:93,familia:'D62-D70'},
+  {tag:'D70',factor:93,familia:'D62-D70'},
+  {tag:'D74',factor:null,familia:'D74-D76'},
+  {tag:'D76',factor:null,familia:'D74-D76'},
+  {tag:'D84',factor:null,familia:'D84-D86'},
+  {tag:'D86',factor:null,familia:'D84-D86'}
+];
+
+let sincronizando=false;
+
+function mostrarPanel(nombre){
+  ['integradores','niveles','estado'].forEach(x=>{
+    document.getElementById('panel'+x[0].toUpperCase()+x.slice(1)).classList.toggle('activo',x===nombre);
+    document.getElementById('tab'+x[0].toUpperCase()+x.slice(1)).classList.toggle('activa',x===nombre);
+  });
+  try{sessionStorage.setItem('integradores_panel',nombre)}catch(e){}
+}
+
 function generarId(){return (window.crypto&&window.crypto.randomUUID)?window.crypto.randomUUID():Date.now().toString(36)+'-'+Math.random().toString(36).slice(2)}
 function leerCola(){try{return JSON.parse(localStorage.getItem(CLAVE_COLA)||'[]')}catch(e){return[]}}
 function guardarCola(c){localStorage.setItem(CLAVE_COLA,JSON.stringify(c));actualizarEstado()}
-function obtenerDatosFormulario(){return[{tipo:'RESINA',valor:document.getElementById('resina').value.trim()},{tipo:'SECUESTRANTE',valor:document.getElementById('secuestrante').value.trim()},{tipo:'F900',valor:document.getElementById('f900').value.trim()},{tipo:'EMULSION_1',valor:document.getElementById('emulsion1').value.trim()},{tipo:'EMULSION_2',valor:document.getElementById('emulsion2').value.trim()}].filter(d=>d.valor!=='')}
-function limpiarFormulario(){['resina','secuestrante','f900','emulsion1','emulsion2'].forEach(id=>document.getElementById(id).value='')}
-function mostrarMensaje(t,tipo){const m=document.getElementById('mensaje');m.textContent=t;m.className=tipo==='pendiente'?'pendiente':(tipo?'ok':'error')}
-function resetearCola(){const n=leerCola().length;if(!n){mostrarMensaje('No hay pendientes para resetear.',true);return}if(!confirm('Se eliminarán '+n+' registro(s) pendiente(s) SOLO de este dispositivo. Esto no borra datos ya enviados a la planilla. ¿Continuar?'))return;localStorage.removeItem(CLAVE_COLA);sincronizando=false;actualizarEstado();mostrarMensaje('✓ Pendientes locales eliminados.',true)}
-function guardarLocal(){const datos=obtenerDatosFormulario();if(!datos.length){mostrarMensaje('Debe ingresar al menos un valor.',false);return}if(datos.some(d=>!/^\d+$/.test(d.valor))){mostrarMensaje('Ingrese solamente números.',false);return}const lote={id:generarId(),fechaTelefono:new Date().toISOString(),datos};const cola=leerCola();cola.push(lote);guardarCola(cola);limpiarFormulario();if(navigator.onLine){mostrarMensaje('✓ Guardado. Sincronizando...',true);sincronizarPendientes()}else mostrarMensaje('✓ Guardado en el teléfono. Pendiente de sincronizar.','pendiente')}
-async function enviarApi(lote){const url=API_URL+'?lote='+encodeURIComponent(JSON.stringify(lote))+'&t='+Date.now();const respuesta=await fetch(url,{method:'GET',cache:'no-store'});let datos;try{datos=await respuesta.json()}catch(e){throw new Error('Respuesta inválida del servidor')}if(!respuesta.ok||!datos||!datos.ok)throw new Error((datos&&datos.error)||('Error HTTP '+respuesta.status));return datos}
-async function sincronizarPendientes(){if(sincronizando||!navigator.onLine)return;let cola=leerCola();if(!cola.length){actualizarEstado();return}sincronizando=true;actualizarEstado();const lote=cola[0];try{await enviarApi(lote);cola=leerCola().filter(x=>x.id!==lote.id);guardarCola(cola);sincronizando=false;if(cola.length){mostrarMensaje('Sincronizando '+cola.length+' pendiente(s)...',true);sincronizarPendientes()}else{mostrarMensaje('✓ Todo sincronizado',true);actualizarEstado()}}catch(e){sincronizando=false;mostrarMensaje('Error sincronización: '+e.message,'pendiente');actualizarEstado()}}
-function actualizarEstado(){const n=leerCola().length;const cuadro=document.getElementById('estadoConexion');const texto=document.getElementById('textoEstado');if(sincronizando){cuadro.className='estado sincronizando';texto.textContent='SINCRONIZANDO — Pendientes: '+n}else if(navigator.onLine){cuadro.className='estado online';texto.textContent='EN LÍNEA — Pendientes: '+n}else{cuadro.className='estado offline';texto.textContent='SIN CONEXIÓN — Pendientes: '+n}}
-function actualizarReloj(){const a=new Date();document.getElementById('horaActual').textContent=String(a.getHours()).padStart(2,'0')+':'+String(a.getMinutes()).padStart(2,'0')+':'+String(a.getSeconds()).padStart(2,'0');document.getElementById('fechaActual').textContent=a.toLocaleDateString('es-CL',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}
-let contadorEasterEgg=0,tiempoUltimoToque=0;function activarEasterEgg(){const a=Date.now();if(a-tiempoUltimoToque>1500)contadorEasterEgg=0;tiempoUltimoToque=a;if(++contadorEasterEgg>=5){document.getElementById('acercaDe').style.display='flex';contadorEasterEgg=0}}function cerrarAcerca(){document.getElementById('acercaDe').style.display='none'}
-window.addEventListener('online',()=>{actualizarEstado();mostrarMensaje('Conexión recuperada. Sincronizando...',true);sincronizarPendientes()});window.addEventListener('offline',()=>{actualizarEstado();mostrarMensaje('Sin conexión. Los datos quedarán guardados en el teléfono.','pendiente')});
-window.addEventListener('load',()=>{actualizarReloj();setInterval(actualizarReloj,1000);setInterval(()=>{if(navigator.onLine&&leerCola().length&&!sincronizando)sincronizarPendientes()},10000);actualizarEstado();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js');if(navigator.onLine)setTimeout(sincronizarPendientes,1200)});
+function mostrarMensaje(id,t,tipo){const m=document.getElementById(id);m.textContent=t;m.className='mensaje '+(tipo==='pendiente'?'pendiente':(tipo?'ok':'error'))}
+
+function obtenerDatosIntegradores(){
+  return[
+    {tipo:'RESINA',valor:document.getElementById('resina').value.trim()},
+    {tipo:'SECUESTRANTE',valor:document.getElementById('secuestrante').value.trim()},
+    {tipo:'F900',valor:document.getElementById('f900').value.trim()},
+    {tipo:'EMULSION_1',valor:document.getElementById('emulsion1').value.trim()},
+    {tipo:'EMULSION_2',valor:document.getElementById('emulsion2').value.trim()}
+  ].filter(d=>d.valor!=='');
+}
+function limpiarIntegradores(){['resina','secuestrante','f900','emulsion1','emulsion2'].forEach(id=>document.getElementById(id).value='')}
+
+function guardarIntegradores(){
+  const datos=obtenerDatosIntegradores();
+  if(!datos.length){mostrarMensaje('mensajeIntegradores','Debe ingresar al menos un valor.',false);return}
+  if(datos.some(d=>!/^\\d+$/.test(d.valor))){mostrarMensaje('mensajeIntegradores','Ingrese solamente números.',false);return}
+  encolar({modulo:'INTEGRADORES',datos});
+  limpiarIntegradores();
+  mostrarMensaje('mensajeIntegradores',navigator.onLine?'✓ Guardado. Sincronizando...':'✓ Guardado en el teléfono. Pendiente de sincronizar.',navigator.onLine?true:'pendiente');
+}
+
+function renderTanques(){
+  const root=document.getElementById('listaTanques');
+  root.innerHTML=TANQUES.map((t,i)=>`
+    <div class="tanque">
+      <div class="tanque-head">
+        <span class="tanque-tag">${t.tag}</span>
+        <span class="tanque-factor">${t.factor===null?'Factor de aforo pendiente':'Aforo patrón protegido'}</span>
+      </div>
+      <div class="nivel-row">
+        <input id="nivel_${t.tag}" class="nivel-input" type="tel" inputmode="numeric" pattern="[0-9]*"
+          maxlength="3" placeholder="0 - 740" autocomplete="off" enterkeyhint="next"
+          oninput="calcularNivel(${i},this)">
+        <div class="unidad">cm</div>
+      </div>
+      <div class="resultados">
+        <div class="resultado"><div class="k">NIVEL TERRENO</div><div class="v" id="pct_${t.tag}">—</div></div>
+        <div class="resultado"><div class="k">CONTENIDO EST.</div><div class="v" id="lit_${t.tag}">—</div></div>
+      </div>
+      <div id="estado_${t.tag}" class="estado-tanque">Sin lectura</div>
+    </div>`).join('');
+}
+
+function calcularNivel(i,el){
+  const t=TANQUES[i];
+  el.value=el.value.replace(/\\D/g,'').slice(0,3);
+  const pct=document.getElementById('pct_'+t.tag),lit=document.getElementById('lit_'+t.tag),est=document.getElementById('estado_'+t.tag);
+  est.className='estado-tanque';
+  if(el.value===''){pct.textContent='—';lit.textContent='—';est.textContent='Sin lectura';return}
+  const cm=parseInt(el.value,10);
+  if(!Number.isInteger(cm)||cm<0||cm>ALTURA_UTIL_CM){
+    pct.textContent='Fuera de rango';lit.textContent='—';est.textContent='Debe estar entre 0 y 740 cm';est.classList.add('invalido');return;
+  }
+  pct.textContent=(cm/ALTURA_UTIL_CM*100).toLocaleString('es-CL',{minimumFractionDigits:1,maximumFractionDigits:1})+' %';
+  lit.textContent=t.factor===null?'Factor pendiente':Math.round(cm*t.factor).toLocaleString('es-CL')+' L';
+  est.textContent='Pendiente de guardar';
+}
+
+function guardarNiveles(){
+  const mediciones=[];
+  for(const t of TANQUES){
+    const el=document.getElementById('nivel_'+t.tag);
+    if(!el||el.value==='')continue;
+    const cm=parseInt(el.value,10);
+    if(!Number.isInteger(cm)||cm<0||cm>ALTURA_UTIL_CM){
+      mostrarMensaje('mensajeNiveles','Revise las lecturas: deben ser enteros entre 0 y 740 cm.',false);return;
+    }
+    mediciones.push({
+      tipo:'NIVEL_TERRENO',
+      estanque:t.tag,
+      cm,
+      porcentaje:Number((cm/ALTURA_UTIL_CM*100).toFixed(2)),
+      factorLitrosCm:t.factor,
+      litrosEstimados:t.factor===null?null:Math.round(cm*t.factor)
+    });
+  }
+  if(!mediciones.length){mostrarMensaje('mensajeNiveles','Ingrese al menos un nivel.',false);return}
+  encolar({modulo:'NIVELES_TANQUES',datos:mediciones});
+  mediciones.forEach(m=>{
+    const e=document.getElementById('estado_'+m.estanque);
+    if(e){e.textContent='Guardado en cola · pendiente de sincronizar';e.className='estado-tanque guardado'}
+    const input=document.getElementById('nivel_'+m.estanque);if(input)input.value='';
+    document.getElementById('pct_'+m.estanque).textContent='—';
+    document.getElementById('lit_'+m.estanque).textContent='—';
+  });
+  mostrarMensaje('mensajeNiveles',navigator.onLine?'✓ Mediciones guardadas. Sincronizando...':'✓ Guardadas en el teléfono. Pendientes de sincronizar.',navigator.onLine?true:'pendiente');
+}
+
+function encolar(parcial){
+  const lote={id:generarId(),fechaTelefono:new Date().toISOString(),...parcial};
+  const cola=leerCola();cola.push(lote);guardarCola(cola);
+  if(navigator.onLine)sincronizarPendientes();
+}
+
+function resetearCola(){
+  const n=leerCola().length;
+  if(!n){mostrarMensaje('mensajeIntegradores','No hay pendientes para resetear.',true);return}
+  if(!confirm('Se eliminarán '+n+' registro(s) pendiente(s) SOLO de este dispositivo. Esto no borra datos ya enviados. ¿Continuar?'))return;
+  localStorage.removeItem(CLAVE_COLA);sincronizando=false;actualizarEstado();
+  mostrarMensaje('mensajeIntegradores','✓ Pendientes locales eliminados.',true);
+}
+
+async function enviarApi(lote){
+  const url=API_URL+'?lote='+encodeURIComponent(JSON.stringify(lote))+'&t='+Date.now();
+  const respuesta=await fetch(url,{method:'GET',cache:'no-store'});
+  let datos;try{datos=await respuesta.json()}catch(e){throw new Error('Respuesta inválida del servidor')}
+  if(!respuesta.ok||!datos||!datos.ok)throw new Error((datos&&datos.error)||('Error HTTP '+respuesta.status));
+  return datos;
+}
+
+async function sincronizarPendientes(){
+  if(sincronizando||!navigator.onLine)return;
+  let cola=leerCola();
+  if(!cola.length){actualizarEstado();return}
+  sincronizando=true;actualizarEstado();
+  const lote=cola[0];
+  try{
+    await enviarApi(lote);
+    cola=leerCola().filter(x=>x.id!==lote.id);guardarCola(cola);sincronizando=false;
+    if(cola.length)sincronizarPendientes();else actualizarEstado();
+  }catch(e){
+    sincronizando=false;actualizarEstado();
+    const target=lote.modulo==='NIVELES_TANQUES'?'mensajeNiveles':'mensajeIntegradores';
+    mostrarMensaje(target,'Error sincronización: '+e.message,'pendiente');
+  }
+}
+
+function actualizarEstado(){
+  const n=leerCola().length,cuadro=document.getElementById('estadoConexion'),texto=document.getElementById('textoEstado');
+  if(sincronizando){cuadro.className='estado sincronizando';texto.textContent='SINCRONIZANDO — Pendientes: '+n}
+  else if(navigator.onLine){cuadro.className='estado online';texto.textContent='EN LÍNEA — Pendientes: '+n}
+  else{cuadro.className='estado offline';texto.textContent='SIN CONEXIÓN — Pendientes: '+n}
+}
+
+function actualizarReloj(){
+  const a=new Date();
+  document.getElementById('horaActual').textContent=String(a.getHours()).padStart(2,'0')+':'+String(a.getMinutes()).padStart(2,'0')+':'+String(a.getSeconds()).padStart(2,'0');
+  document.getElementById('fechaActual').textContent=a.toLocaleDateString('es-CL',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+}
+
+let contadorEasterEgg=0,tiempoUltimoToque=0;
+function activarEasterEgg(){const a=Date.now();if(a-tiempoUltimoToque>1500)contadorEasterEgg=0;tiempoUltimoToque=a;if(++contadorEasterEgg>=5){document.getElementById('acercaDe').style.display='flex';contadorEasterEgg=0}}
+function cerrarAcerca(){document.getElementById('acercaDe').style.display='none'}
+
+window.addEventListener('online',()=>{actualizarEstado();sincronizarPendientes()});
+window.addEventListener('offline',actualizarEstado);
+window.addEventListener('load',()=>{
+  renderTanques();
+  actualizarReloj();setInterval(actualizarReloj,1000);
+  setInterval(()=>{if(navigator.onLine&&leerCola().length&&!sincronizando)sincronizarPendientes()},10000);
+  actualizarEstado();
+  try{const p=sessionStorage.getItem('integradores_panel');if(['integradores','niveles','estado'].includes(p))mostrarPanel(p)}catch(e){}
+  if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js');
+  if(navigator.onLine)setTimeout(sincronizarPendientes,1200);
+});
 </script>
 </body>
 </html>
