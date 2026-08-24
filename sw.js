@@ -1,12 +1,11 @@
-const CACHE_NAME = 'integradores-pwa-v18';
+const CACHE_NAME = 'integradores-pwa-v19';
 const APP_SHELL = [
   './',
   './index.html',
   './manifest.json',
   './icon.svg',
   './icon-192.png',
-  './logo-masisa.png',
-  './planta-footer-v17.svg'
+  './logo-masisa.png'
 ];
 
 self.addEventListener('install', event => {
@@ -27,16 +26,6 @@ self.addEventListener('activate', event => {
 
 self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
-
-  const url = new URL(event.request.url);
-  if (url.pathname.endsWith('/planta-footer.svg')) {
-    event.respondWith(
-      caches.match('./planta-footer-v17.svg').then(cached =>
-        cached || fetch('./planta-footer-v17.svg', {cache:'no-store'})
-      )
-    );
-    return;
-  }
 
   event.respondWith(
     fetch(event.request)
