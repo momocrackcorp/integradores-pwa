@@ -27,11 +27,11 @@ body{margin:0;padding:14px 4px 4px;min-height:100vh;font-family:Arial,Helvetica,
 .panel{display:none}.panel.activo{display:block}
 .contenido{padding:10px 13px 12px}
 .grupo{margin-bottom:6px}
-label{display:block;margin-bottom:3px;font-size:16px;line-height:1.05;font-weight:900}
-input{width:100%;height:50px;padding:5px 12px;font-size:24px;font-weight:900;color:#111;background:#fafafa;border:2px solid #b4c2b7;border-radius:11px}
+label{display:block;margin-bottom:4px;font-size:16px;line-height:1.05;font-weight:900}
+input{width:100%;height:52px;padding:5px 12px;font-size:24px;font-weight:900;color:#111;background:#fafafa;border:2px solid #b4c2b7;border-radius:11px}
 input:focus{outline:none;background:#fff;border-color:#0d6b38;box-shadow:0 0 0 3px rgba(13,107,56,.14)}
 input::placeholder{font-size:17px;font-weight:600;color:#aaa}
-.boton{width:100%;height:54px;margin-top:5px;padding:0 10px;border:0;border-radius:12px;background:linear-gradient(180deg,#15934e 0%,#0d6b38 100%);color:#fff;font-size:20px;line-height:1;white-space:nowrap;font-weight:900;box-shadow:0 3px 9px rgba(13,107,56,.25)}
+.boton{width:100%;height:56px;margin-top:7px;padding:0 10px;border:0;border-radius:12px;background:linear-gradient(180deg,#15934e 0%,#0d6b38 100%);color:#fff;font-size:20px;line-height:1;white-space:nowrap;font-weight:900;box-shadow:0 3px 9px rgba(13,107,56,.25)}
 .boton:active{transform:scale(.98)}
 .mensaje{min-height:24px;margin-top:8px;text-align:center;font-size:15px;line-height:1.2;font-weight:900}
 .ok{color:#0d6b38}.error{color:#c62828}.pendiente{color:#c77800}
@@ -58,6 +58,10 @@ input::placeholder{font-size:17px;font-weight:600;color:#aaa}
 .acerca{display:none;position:fixed;inset:0;padding:20px;align-items:center;justify-content:center;background:rgba(0,0,0,.9);z-index:99999}
 .acerca-contenido{width:100%;max-width:460px;padding:24px 20px;text-align:center;background:#050505;border:4px solid #ffe500;border-radius:22px}
 .acerca-titulo{margin-bottom:18px;font-size:29px;font-weight:900;color:#ffe500}.oa{font-size:27px;font-weight:900;letter-spacing:4px;color:#fff}.waka{margin-top:13px;font-size:17px;font-weight:900;color:#ffe500}.cerrar-acerca{width:100%;height:58px;margin-top:22px;border:0;border-radius:12px;background:#ffe500;color:#111;font-size:20px;font-weight:900}
+#panelIntegradores .contenido{min-height:calc(100svh - 220px);display:flex;flex-direction:column;padding:15px 13px 18px}
+#panelIntegradores .grupo{margin-bottom:0}
+#panelIntegradores .grupo+.grupo{margin-top:13px}
+#panelIntegradores .boton{margin-top:auto}
 @media (max-width:420px){
   body{padding:14px 3px 3px}
   .contenedor{border-radius:16px}
@@ -68,51 +72,27 @@ input::placeholder{font-size:17px;font-weight:600;color:#aaa}
   .tab{height:40px;font-size:12.5px}
   .contenido{padding:9px 12px 11px}
   label{font-size:15.5px}
-  input{height:48px;font-size:23px}
-  .boton{height:52px;font-size:19px}
+  input{height:50px;font-size:23px}
+  .boton{height:54px;font-size:19px}
+  #panelIntegradores .contenido{min-height:calc(100svh - 210px);padding:14px 12px 17px}
+  #panelIntegradores .grupo+.grupo{margin-top:12px}
 }
 </style>
 </head>
 <body>
 <div class="contenedor">
-  <div class="cabecera">
-    <img class="logo" src="logo-masisa.png" alt="MASISA">
-    <h1 class="titulo">Integradores</h1>
-    <div class="subtitulo">Registro de consumos y niveles</div>
-  </div>
-  <nav class="tabs">
-    <button id="tabIntegradores" class="tab activa" onclick="mostrarPanel('integradores')">Integradores</button>
-    <button id="tabNiveles" class="tab" onclick="mostrarPanel('niveles')">Niveles</button>
-    <button id="tabEstado" class="tab" onclick="mostrarPanel('estado')">Estado</button>
-  </nav>
-  <section id="panelIntegradores" class="panel activo">
-    <div class="contenido">
-      <div class="grupo"><label for="resina">Resina</label><input id="resina" type="tel" inputmode="numeric" pattern="[0-9]*" placeholder="Ingrese valor" autocomplete="off"></div>
-      <div class="grupo"><label for="secuestrante">Secuestrante</label><input id="secuestrante" type="tel" inputmode="numeric" pattern="[0-9]*" placeholder="Ingrese valor" autocomplete="off"></div>
-      <div class="grupo"><label for="f900">F900</label><input id="f900" type="tel" inputmode="numeric" pattern="[0-9]*" placeholder="Ingrese valor" autocomplete="off"></div>
-      <div class="grupo"><label for="emulsion1">Emulsión 1 Quimtec</label><input id="emulsion1" type="tel" inputmode="numeric" pattern="[0-9]*" placeholder="Ingrese valor" autocomplete="off"></div>
-      <div class="grupo"><label for="emulsion2">Emulsión 2 Quimtec</label><input id="emulsion2" type="tel" inputmode="numeric" pattern="[0-9]*" placeholder="Ingrese valor" autocomplete="off"></div>
-      <button class="boton" onclick="guardarIntegradores()">GUARDAR INTEGRADORES</button>
-      <div id="mensajeIntegradores" class="mensaje"></div>
-    </div>
-  </section>
-  <section id="panelNiveles" class="panel">
-    <div class="contenido">
-      <div class="info"><b>Nivel terreno.</b> Ingrese centímetros enteros entre 0 y 740. El teléfono abrirá teclado numérico. Los cálculos mostrados son de apoyo; al sincronizar se enviará la lectura en cm al sistema central.</div>
-      <div id="listaTanques"></div>
-      <button class="boton" onclick="guardarNiveles()">GUARDAR MEDICIONES</button>
-      <div id="mensajeNiveles" class="mensaje"></div>
-    </div>
-  </section>
-  <section id="panelEstado" class="panel">
-    <div class="contenido">
-      <div id="estadoConexion" class="estado online"><div class="punto"></div><span id="textoEstado">EN LÍNEA — Pendientes: 0</span></div>
-      <button class="reset" onclick="resetearCola()">RESET PENDIENTES</button>
-      <div class="reloj"><div id="horaActual">--:--:--</div><div id="fechaActual">Cargando fecha...</div></div>
-      <div class="info" style="margin-top:10px">La cola local es común para Integradores y Niveles. Si el equipo queda sin señal, los registros permanecen en este dispositivo y se reintentan automáticamente.</div>
-      <div class="pie" onclick="activarEasterEgg()">MASISA</div>
-    </div>
-  </section>
+  <div class="cabecera"><img class="logo" src="logo-masisa.png" alt="MASISA"><h1 class="titulo">Integradores</h1><div class="subtitulo">Registro de consumos y niveles</div></div>
+  <nav class="tabs"><button id="tabIntegradores" class="tab activa" onclick="mostrarPanel('integradores')">Integradores</button><button id="tabNiveles" class="tab" onclick="mostrarPanel('niveles')">Niveles</button><button id="tabEstado" class="tab" onclick="mostrarPanel('estado')">Estado</button></nav>
+  <section id="panelIntegradores" class="panel activo"><div class="contenido">
+    <div class="grupo"><label for="resina">Resina</label><input id="resina" type="tel" inputmode="numeric" pattern="[0-9]*" placeholder="Ingrese valor" autocomplete="off"></div>
+    <div class="grupo"><label for="secuestrante">Secuestrante</label><input id="secuestrante" type="tel" inputmode="numeric" pattern="[0-9]*" placeholder="Ingrese valor" autocomplete="off"></div>
+    <div class="grupo"><label for="f900">F900</label><input id="f900" type="tel" inputmode="numeric" pattern="[0-9]*" placeholder="Ingrese valor" autocomplete="off"></div>
+    <div class="grupo"><label for="emulsion1">Emulsión 1 Quimtec</label><input id="emulsion1" type="tel" inputmode="numeric" pattern="[0-9]*" placeholder="Ingrese valor" autocomplete="off"></div>
+    <div class="grupo"><label for="emulsion2">Emulsión 2 Quimtec</label><input id="emulsion2" type="tel" inputmode="numeric" pattern="[0-9]*" placeholder="Ingrese valor" autocomplete="off"></div>
+    <button class="boton" onclick="guardarIntegradores()">GUARDAR INTEGRADORES</button><div id="mensajeIntegradores" class="mensaje"></div>
+  </div></section>
+  <section id="panelNiveles" class="panel"><div class="contenido"><div class="info"><b>Nivel terreno.</b> Ingrese centímetros enteros entre 0 y 740. El teléfono abrirá teclado numérico. Los cálculos mostrados son de apoyo; al sincronizar se enviará la lectura en cm al sistema central.</div><div id="listaTanques"></div><button class="boton" onclick="guardarNiveles()">GUARDAR MEDICIONES</button><div id="mensajeNiveles" class="mensaje"></div></div></section>
+  <section id="panelEstado" class="panel"><div class="contenido"><div id="estadoConexion" class="estado online"><div class="punto"></div><span id="textoEstado">EN LÍNEA — Pendientes: 0</span></div><button class="reset" onclick="resetearCola()">RESET PENDIENTES</button><div class="reloj"><div id="horaActual">--:--:--</div><div id="fechaActual">Cargando fecha...</div></div><div class="info" style="margin-top:10px">La cola local es común para Integradores y Niveles. Si el equipo queda sin señal, los registros permanecen en este dispositivo y se reintentan automáticamente.</div><div class="pie" onclick="activarEasterEgg()">MASISA</div></div></section>
 </div>
 <div id="acercaDe" class="acerca"><div class="acerca-contenido"><div class="acerca-titulo">ACERCA DE</div><div class="oa">OA MMXXVI</div><div class="waka">WAKAWAKAWAKAWAKAWAKA</div><button class="cerrar-acerca" onclick="cerrarAcerca()">CERRAR</button></div></div>
 <script>
