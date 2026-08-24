@@ -1,4 +1,4 @@
-const CACHE_NAME = 'integradores-pwa-v13';
+const CACHE_NAME = 'integradores-pwa-v14';
 const APP_SHELL = [
   './',
   './index.html',
