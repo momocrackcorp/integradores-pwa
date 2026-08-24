@@ -14,8 +14,9 @@
 <style>
 *{box-sizing:border-box}
 html{background:#084c28}
-body{margin:0;padding:4px;min-height:100vh;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(180deg,#0d6b38 0%,#084c28 100%);color:#222}
-.contenedor{width:100%;max-width:520px;margin:0 auto;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 6px 18px rgba(0,0,0,.22)}
+body{margin:0;padding:14px 4px 4px;min-height:100vh;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(180deg,#0d6b38 0%,#084c28 100%);color:#222}
+@supports (padding:max(0px)){body{padding-top:max(14px,env(safe-area-inset-top))}}
+.contenedor{width:100%;max-width:520px;margin:0 auto;background:#fff;border:2px solid #063f23;border-top-width:5px;border-radius:18px;overflow:hidden;box-shadow:0 6px 18px rgba(0,0,0,.22)}
 .cabecera{padding:5px 14px 7px;text-align:center;background:linear-gradient(180deg,#fff 0%,#eef5f0 100%);border-bottom:3px solid #0d6b38}
 .logo{display:block;width:100%;max-width:148px;height:auto;margin:0 auto 1px}
 .titulo{margin:0;font-size:23px;line-height:1.05;font-weight:900;color:#0d6b38}
@@ -57,9 +58,8 @@ input::placeholder{font-size:17px;font-weight:600;color:#aaa}
 .acerca{display:none;position:fixed;inset:0;padding:20px;align-items:center;justify-content:center;background:rgba(0,0,0,.9);z-index:99999}
 .acerca-contenido{width:100%;max-width:460px;padding:24px 20px;text-align:center;background:#050505;border:4px solid #ffe500;border-radius:22px}
 .acerca-titulo{margin-bottom:18px;font-size:29px;font-weight:900;color:#ffe500}.oa{font-size:27px;font-weight:900;letter-spacing:4px;color:#fff}.waka{margin-top:13px;font-size:17px;font-weight:900;color:#ffe500}.cerrar-acerca{width:100%;height:58px;margin-top:22px;border:0;border-radius:12px;background:#ffe500;color:#111;font-size:20px;font-weight:900}
-
 @media (max-width:420px){
-  body{padding:3px}
+  body{padding:14px 3px 3px}
   .contenedor{border-radius:16px}
   .cabecera{padding-top:4px}
   .logo{max-width:138px}
@@ -80,13 +80,11 @@ input::placeholder{font-size:17px;font-weight:600;color:#aaa}
     <h1 class="titulo">Integradores</h1>
     <div class="subtitulo">Registro de consumos y niveles</div>
   </div>
-
   <nav class="tabs">
     <button id="tabIntegradores" class="tab activa" onclick="mostrarPanel('integradores')">Integradores</button>
     <button id="tabNiveles" class="tab" onclick="mostrarPanel('niveles')">Niveles</button>
     <button id="tabEstado" class="tab" onclick="mostrarPanel('estado')">Estado</button>
   </nav>
-
   <section id="panelIntegradores" class="panel activo">
     <div class="contenido">
       <div class="grupo"><label for="resina">Resina</label><input id="resina" type="tel" inputmode="numeric" pattern="[0-9]*" placeholder="Ingrese valor" autocomplete="off"></div>
@@ -98,7 +96,6 @@ input::placeholder{font-size:17px;font-weight:600;color:#aaa}
       <div id="mensajeIntegradores" class="mensaje"></div>
     </div>
   </section>
-
   <section id="panelNiveles" class="panel">
     <div class="contenido">
       <div class="info"><b>Nivel terreno.</b> Ingrese centímetros enteros entre 0 y 740. El teléfono abrirá teclado numérico. Los cálculos mostrados son de apoyo; al sincronizar se enviará la lectura en cm al sistema central.</div>
@@ -107,7 +104,6 @@ input::placeholder{font-size:17px;font-weight:600;color:#aaa}
       <div id="mensajeNiveles" class="mensaje"></div>
     </div>
   </section>
-
   <section id="panelEstado" class="panel">
     <div class="contenido">
       <div id="estadoConexion" class="estado online"><div class="punto"></div><span id="textoEstado">EN LÍNEA — Pendientes: 0</span></div>
@@ -118,205 +114,33 @@ input::placeholder{font-size:17px;font-weight:600;color:#aaa}
     </div>
   </section>
 </div>
-
-<div id="acercaDe" class="acerca">
-  <div class="acerca-contenido">
-    <div class="acerca-titulo">ACERCA DE</div>
-    <div class="oa">OA MMXXVI</div>
-    <div class="waka">WAKAWAKAWAKAWAKAWAKA</div>
-    <button class="cerrar-acerca" onclick="cerrarAcerca()">CERRAR</button>
-  </div>
-</div>
-
+<div id="acercaDe" class="acerca"><div class="acerca-contenido"><div class="acerca-titulo">ACERCA DE</div><div class="oa">OA MMXXVI</div><div class="waka">WAKAWAKAWAKAWAKAWAKA</div><button class="cerrar-acerca" onclick="cerrarAcerca()">CERRAR</button></div></div>
 <script>
 const API_INTEGRADORES='https://floral-cherry-8db2.momocrackcorp.workers.dev/';
 const API_NIVELES='https://minicierre.momocrackcorp.workers.dev/';
 const CLAVE_COLA='integradores_cola_pwa_v1';
 const ALTURA_UTIL_CM=740;
-
-// Factores ocultos de interfaz. La edición final debe quedar protegida en backend/configuración.
-const TANQUES=[
-  {tag:'D62',factor:93,familia:'D62-D70'},
-  {tag:'D64',factor:93,familia:'D62-D70'},
-  {tag:'D66',factor:93,familia:'D62-D70'},
-  {tag:'D68',factor:93,familia:'D62-D70'},
-  {tag:'D70',factor:93,familia:'D62-D70'},
-  {tag:'D74',factor:62,familia:'D74-D76'},
-  {tag:'D76',factor:62,familia:'D74-D76'},
-  {tag:'D84',factor:62,familia:'D84-D86'},
-  {tag:'D86',factor:62,familia:'D84-D86'}
-];
-
+const TANQUES=[{tag:'D62',factor:93,familia:'D62-D70'},{tag:'D64',factor:93,familia:'D62-D70'},{tag:'D66',factor:93,familia:'D62-D70'},{tag:'D68',factor:93,familia:'D62-D70'},{tag:'D70',factor:93,familia:'D62-D70'},{tag:'D74',factor:62,familia:'D74-D76'},{tag:'D76',factor:62,familia:'D74-D76'},{tag:'D84',factor:62,familia:'D84-D86'},{tag:'D86',factor:62,familia:'D84-D86'}];
 let sincronizando=false;
-
-function mostrarPanel(nombre){
-  ['integradores','niveles','estado'].forEach(x=>{
-    document.getElementById('panel'+x[0].toUpperCase()+x.slice(1)).classList.toggle('activo',x===nombre);
-    document.getElementById('tab'+x[0].toUpperCase()+x.slice(1)).classList.toggle('activa',x===nombre);
-  });
-  try{sessionStorage.setItem('integradores_panel',nombre)}catch(e){}
-}
-
+function mostrarPanel(nombre){['integradores','niveles','estado'].forEach(x=>{document.getElementById('panel'+x[0].toUpperCase()+x.slice(1)).classList.toggle('activo',x===nombre);document.getElementById('tab'+x[0].toUpperCase()+x.slice(1)).classList.toggle('activa',x===nombre)});try{sessionStorage.setItem('integradores_panel',nombre)}catch(e){}}
 function generarId(){return (window.crypto&&window.crypto.randomUUID)?window.crypto.randomUUID():Date.now().toString(36)+'-'+Math.random().toString(36).slice(2)}
 function leerCola(){try{return JSON.parse(localStorage.getItem(CLAVE_COLA)||'[]')}catch(e){return[]}}
 function guardarCola(c){localStorage.setItem(CLAVE_COLA,JSON.stringify(c));actualizarEstado()}
 function mostrarMensaje(id,t,tipo){const m=document.getElementById(id);m.textContent=t;m.className='mensaje '+(tipo==='pendiente'?'pendiente':(tipo?'ok':'error'))}
-
-function obtenerDatosIntegradores(){
-  return[
-    {tipo:'RESINA',valor:document.getElementById('resina').value.trim()},
-    {tipo:'SECUESTRANTE',valor:document.getElementById('secuestrante').value.trim()},
-    {tipo:'F900',valor:document.getElementById('f900').value.trim()},
-    {tipo:'EMULSION_1',valor:document.getElementById('emulsion1').value.trim()},
-    {tipo:'EMULSION_2',valor:document.getElementById('emulsion2').value.trim()}
-  ].filter(d=>d.valor!=='');
-}
+function obtenerDatosIntegradores(){return[{tipo:'RESINA',valor:document.getElementById('resina').value.trim()},{tipo:'SECUESTRANTE',valor:document.getElementById('secuestrante').value.trim()},{tipo:'F900',valor:document.getElementById('f900').value.trim()},{tipo:'EMULSION_1',valor:document.getElementById('emulsion1').value.trim()},{tipo:'EMULSION_2',valor:document.getElementById('emulsion2').value.trim()}].filter(d=>d.valor!=='')}
 function limpiarIntegradores(){['resina','secuestrante','f900','emulsion1','emulsion2'].forEach(id=>document.getElementById(id).value='')}
-
-function guardarIntegradores(){
-  const datos=obtenerDatosIntegradores();
-  if(!datos.length){mostrarMensaje('mensajeIntegradores','Debe ingresar al menos un valor.',false);return}
-  if(datos.some(d=>!/^\d+$/.test(d.valor))){mostrarMensaje('mensajeIntegradores','Ingrese solamente números.',false);return}
-  encolar({modulo:'INTEGRADORES',datos});
-  limpiarIntegradores();
-  mostrarMensaje('mensajeIntegradores',navigator.onLine?'✓ Guardado. Sincronizando...':'✓ Guardado en el teléfono. Pendiente de sincronizar.',navigator.onLine?true:'pendiente');
-}
-
-function renderTanques(){
-  const root=document.getElementById('listaTanques');
-  root.innerHTML=TANQUES.map((t,i)=>`
-    <div class="tanque">
-      <div class="tanque-head">
-        <span class="tanque-tag">${t.tag}</span>
-        <span class="tanque-factor">${t.factor===null?'Factor de aforo pendiente':'Aforo patrón protegido'}</span>
-      </div>
-      <div class="nivel-row">
-        <input id="nivel_${t.tag}" class="nivel-input" type="tel" inputmode="numeric" pattern="[0-9]*"
-          maxlength="3" placeholder="0 - 740" autocomplete="off" enterkeyhint="next"
-          oninput="calcularNivel(${i},this)">
-        <div class="unidad">cm</div>
-      </div>
-      <div class="resultados">
-        <div class="resultado"><div class="k">NIVEL TERRENO</div><div class="v" id="pct_${t.tag}">—</div></div>
-        <div class="resultado"><div class="k">CONTENIDO EST.</div><div class="v" id="lit_${t.tag}">—</div></div>
-      </div>
-      <div id="estado_${t.tag}" class="estado-tanque">Sin lectura</div>
-    </div>`).join('');
-}
-
-function calcularNivel(i,el){
-  const t=TANQUES[i];
-  el.value=el.value.replace(/\D/g,'').slice(0,3);
-  const pct=document.getElementById('pct_'+t.tag),lit=document.getElementById('lit_'+t.tag),est=document.getElementById('estado_'+t.tag);
-  est.className='estado-tanque';
-  if(el.value===''){pct.textContent='—';lit.textContent='—';est.textContent='Sin lectura';return}
-  const cm=parseInt(el.value,10);
-  if(!Number.isInteger(cm)||cm<0||cm>ALTURA_UTIL_CM){
-    pct.textContent='Fuera de rango';lit.textContent='—';est.textContent='Debe estar entre 0 y 740 cm';est.classList.add('invalido');return;
-  }
-  pct.textContent=(cm/ALTURA_UTIL_CM*100).toLocaleString('es-CL',{minimumFractionDigits:1,maximumFractionDigits:1})+' %';
-  lit.textContent=t.factor===null?'Factor pendiente':Math.round(cm*t.factor).toLocaleString('es-CL')+' L';
-  est.textContent='Pendiente de guardar';
-}
-
-function guardarNiveles(){
-  const mediciones=[];
-  for(const t of TANQUES){
-    const el=document.getElementById('nivel_'+t.tag);
-    if(!el||el.value==='')continue;
-    const cm=parseInt(el.value,10);
-    if(!Number.isInteger(cm)||cm<0||cm>ALTURA_UTIL_CM){
-      mostrarMensaje('mensajeNiveles','Revise las lecturas: deben ser enteros entre 0 y 740 cm.',false);return;
-    }
-    mediciones.push({
-      tipo:'NIVEL_TERRENO',
-      estanque:t.tag,
-      cm,
-      porcentaje:Number((cm/ALTURA_UTIL_CM*100).toFixed(2)),
-      factorLitrosCm:t.factor,
-      litrosEstimados:t.factor===null?null:Math.round(cm*t.factor)
-    });
-  }
-  if(!mediciones.length){mostrarMensaje('mensajeNiveles','Ingrese al menos un nivel.',false);return}
-  encolar({modulo:'NIVELES_TANQUES',datos:mediciones});
-  mediciones.forEach(m=>{
-    const e=document.getElementById('estado_'+m.estanque);
-    if(e){e.textContent='Guardado en cola · pendiente de sincronizar';e.className='estado-tanque guardado'}
-    const input=document.getElementById('nivel_'+m.estanque);if(input)input.value='';
-    document.getElementById('pct_'+m.estanque).textContent='—';
-    document.getElementById('lit_'+m.estanque).textContent='—';
-  });
-  mostrarMensaje('mensajeNiveles',navigator.onLine?'✓ Mediciones guardadas. Sincronizando...':'✓ Guardadas en el teléfono. Pendientes de sincronizar.',navigator.onLine?true:'pendiente');
-}
-
-function encolar(parcial){
-  const lote={id:generarId(),fechaTelefono:new Date().toISOString(),...parcial};
-  const cola=leerCola();cola.push(lote);guardarCola(cola);
-  if(navigator.onLine)sincronizarPendientes();
-}
-
-function resetearCola(){
-  const n=leerCola().length;
-  if(!n){mostrarMensaje('mensajeIntegradores','No hay pendientes para resetear.',true);return}
-  if(!confirm('Se eliminarán '+n+' registro(s) pendiente(s) SOLO de este dispositivo. Esto no borra datos ya enviados. ¿Continuar?'))return;
-  localStorage.removeItem(CLAVE_COLA);sincronizando=false;actualizarEstado();
-  mostrarMensaje('mensajeIntegradores','✓ Pendientes locales eliminados.',true);
-}
-
-async function enviarApi(lote){
-  const baseUrl=lote && lote.modulo==='NIVELES_TANQUES' ? API_NIVELES : API_INTEGRADORES;
-  const url=baseUrl+'?lote='+encodeURIComponent(JSON.stringify(lote))+'&t='+Date.now();
-  const respuesta=await fetch(url,{method:'GET',cache:'no-store'});
-  let datos;try{datos=await respuesta.json()}catch(e){throw new Error('Respuesta inválida del servidor')}
-  if(!respuesta.ok||!datos||!datos.ok)throw new Error((datos&&datos.error)||('Error HTTP '+respuesta.status));
-  return datos;
-}
-
-async function sincronizarPendientes(){
-  if(sincronizando||!navigator.onLine)return;
-  let cola=leerCola();
-  if(!cola.length){actualizarEstado();return}
-  sincronizando=true;actualizarEstado();
-  const lote=cola[0];
-  try{
-    await enviarApi(lote);
-    cola=leerCola().filter(x=>x.id!==lote.id);guardarCola(cola);sincronizando=false;
-    if(cola.length)sincronizarPendientes();else actualizarEstado();
-  }catch(e){
-    sincronizando=false;actualizarEstado();
-    const target=lote.modulo==='NIVELES_TANQUES'?'mensajeNiveles':'mensajeIntegradores';
-    mostrarMensaje(target,'Error sincronización: '+e.message,'pendiente');
-  }
-}
-
-function actualizarEstado(){
-  const n=leerCola().length,cuadro=document.getElementById('estadoConexion'),texto=document.getElementById('textoEstado');
-  if(sincronizando){cuadro.className='estado sincronizando';texto.textContent='SINCRONIZANDO — Pendientes: '+n}
-  else if(navigator.onLine){cuadro.className='estado online';texto.textContent='EN LÍNEA — Pendientes: '+n}
-  else{cuadro.className='estado offline';texto.textContent='SIN CONEXIÓN — Pendientes: '+n}
-}
-
-function actualizarReloj(){
-  const a=new Date();
-  document.getElementById('horaActual').textContent=String(a.getHours()).padStart(2,'0')+':'+String(a.getMinutes()).padStart(2,'0')+':'+String(a.getSeconds()).padStart(2,'0');
-  document.getElementById('fechaActual').textContent=a.toLocaleDateString('es-CL',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-}
-
-let contadorEasterEgg=0,tiempoUltimoToque=0;
-function activarEasterEgg(){const a=Date.now();if(a-tiempoUltimoToque>1500)contadorEasterEgg=0;tiempoUltimoToque=a;if(++contadorEasterEgg>=5){document.getElementById('acercaDe').style.display='flex';contadorEasterEgg=0}}
-function cerrarAcerca(){document.getElementById('acercaDe').style.display='none'}
-
-window.addEventListener('online',()=>{actualizarEstado();sincronizarPendientes()});
-window.addEventListener('offline',actualizarEstado);
-window.addEventListener('load',()=>{
-  renderTanques();
-  actualizarReloj();setInterval(actualizarReloj,1000);
-  setInterval(()=>{if(navigator.onLine&&leerCola().length&&!sincronizando)sincronizarPendientes()},10000);
-  actualizarEstado();
-  try{const p=sessionStorage.getItem('integradores_panel');if(['integradores','niveles','estado'].includes(p))mostrarPanel(p)}catch(e){}
-  if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js');
-  if(navigator.onLine)setTimeout(sincronizarPendientes,1200);
-});
+function guardarIntegradores(){const datos=obtenerDatosIntegradores();if(!datos.length){mostrarMensaje('mensajeIntegradores','Debe ingresar al menos un valor.',false);return}if(datos.some(d=>!/^\d+$/.test(d.valor))){mostrarMensaje('mensajeIntegradores','Ingrese solamente números.',false);return}encolar({modulo:'INTEGRADORES',datos});limpiarIntegradores();mostrarMensaje('mensajeIntegradores',navigator.onLine?'✓ Guardado. Sincronizando...':'✓ Guardado en el teléfono. Pendiente de sincronizar.',navigator.onLine?true:'pendiente')}
+function renderTanques(){const root=document.getElementById('listaTanques');root.innerHTML=TANQUES.map((t,i)=>`<div class="tanque"><div class="tanque-head"><span class="tanque-tag">${t.tag}</span><span class="tanque-factor">Aforo patrón protegido</span></div><div class="nivel-row"><input id="nivel_${t.tag}" class="nivel-input" type="tel" inputmode="numeric" pattern="[0-9]*" maxlength="3" placeholder="0 - 740" autocomplete="off" enterkeyhint="next" oninput="calcularNivel(${i},this)"><div class="unidad">cm</div></div><div class="resultados"><div class="resultado"><div class="k">NIVEL TERRENO</div><div class="v" id="pct_${t.tag}">—</div></div><div class="resultado"><div class="k">CONTENIDO EST.</div><div class="v" id="lit_${t.tag}">—</div></div></div><div id="estado_${t.tag}" class="estado-tanque">Sin lectura</div></div>`).join('')}
+function calcularNivel(i,el){const t=TANQUES[i];el.value=el.value.replace(/\D/g,'').slice(0,3);const pct=document.getElementById('pct_'+t.tag),lit=document.getElementById('lit_'+t.tag),est=document.getElementById('estado_'+t.tag);est.className='estado-tanque';if(el.value===''){pct.textContent='—';lit.textContent='—';est.textContent='Sin lectura';return}const cm=parseInt(el.value,10);if(!Number.isInteger(cm)||cm<0||cm>ALTURA_UTIL_CM){pct.textContent='Fuera de rango';lit.textContent='—';est.textContent='Debe estar entre 0 y 740 cm';est.classList.add('invalido');return}pct.textContent=(cm/ALTURA_UTIL_CM*100).toLocaleString('es-CL',{minimumFractionDigits:1,maximumFractionDigits:1})+' %';lit.textContent=Math.round(cm*t.factor).toLocaleString('es-CL')+' L';est.textContent='Pendiente de guardar'}
+function guardarNiveles(){const mediciones=[];for(const t of TANQUES){const el=document.getElementById('nivel_'+t.tag);if(!el||el.value==='')continue;const cm=parseInt(el.value,10);if(!Number.isInteger(cm)||cm<0||cm>ALTURA_UTIL_CM){mostrarMensaje('mensajeNiveles','Revise las lecturas: deben ser enteros entre 0 y 740 cm.',false);return}mediciones.push({tipo:'NIVEL_TERRENO',estanque:t.tag,cm,porcentaje:Number((cm/ALTURA_UTIL_CM*100).toFixed(2)),factorLitrosCm:t.factor,litrosEstimados:Math.round(cm*t.factor)})}if(!mediciones.length){mostrarMensaje('mensajeNiveles','Ingrese al menos un nivel.',false);return}encolar({modulo:'NIVELES_TANQUES',datos:mediciones});mediciones.forEach(m=>{const e=document.getElementById('estado_'+m.estanque);if(e){e.textContent='Guardado en cola · pendiente de sincronizar';e.className='estado-tanque guardado'}const input=document.getElementById('nivel_'+m.estanque);if(input)input.value='';document.getElementById('pct_'+m.estanque).textContent='—';document.getElementById('lit_'+m.estanque).textContent='—'});mostrarMensaje('mensajeNiveles',navigator.onLine?'✓ Mediciones guardadas. Sincronizando...':'✓ Guardadas en el teléfono. Pendientes de sincronizar.',navigator.onLine?true:'pendiente')}
+function encolar(parcial){const lote={id:generarId(),fechaTelefono:new Date().toISOString(),...parcial};const cola=leerCola();cola.push(lote);guardarCola(cola);if(navigator.onLine)sincronizarPendientes()}
+function resetearCola(){const n=leerCola().length;if(!n){mostrarMensaje('mensajeIntegradores','No hay pendientes para resetear.',true);return}if(!confirm('Se eliminarán '+n+' registro(s) pendiente(s) SOLO de este dispositivo. Esto no borra datos ya enviados. ¿Continuar?'))return;localStorage.removeItem(CLAVE_COLA);sincronizando=false;actualizarEstado();mostrarMensaje('mensajeIntegradores','✓ Pendientes locales eliminados.',true)}
+async function enviarApi(lote){const baseUrl=lote&&lote.modulo==='NIVELES_TANQUES'?API_NIVELES:API_INTEGRADORES;const url=baseUrl+'?lote='+encodeURIComponent(JSON.stringify(lote))+'&t='+Date.now();const respuesta=await fetch(url,{method:'GET',cache:'no-store'});let datos;try{datos=await respuesta.json()}catch(e){throw new Error('Respuesta inválida del servidor')}if(!respuesta.ok||!datos||!datos.ok)throw new Error((datos&&datos.error)||('Error HTTP '+respuesta.status));return datos}
+async function sincronizarPendientes(){if(sincronizando||!navigator.onLine)return;let cola=leerCola();if(!cola.length){actualizarEstado();return}sincronizando=true;actualizarEstado();const lote=cola[0];try{await enviarApi(lote);cola=leerCola().filter(x=>x.id!==lote.id);guardarCola(cola);sincronizando=false;if(cola.length)sincronizarPendientes();else actualizarEstado()}catch(e){sincronizando=false;actualizarEstado();const target=lote.modulo==='NIVELES_TANQUES'?'mensajeNiveles':'mensajeIntegradores';mostrarMensaje(target,'Error sincronización: '+e.message,'pendiente')}}
+function actualizarEstado(){const n=leerCola().length,cuadro=document.getElementById('estadoConexion'),texto=document.getElementById('textoEstado');if(sincronizando){cuadro.className='estado sincronizando';texto.textContent='SINCRONIZANDO — Pendientes: '+n}else if(navigator.onLine){cuadro.className='estado online';texto.textContent='EN LÍNEA — Pendientes: '+n}else{cuadro.className='estado offline';texto.textContent='SIN CONEXIÓN — Pendientes: '+n}}
+function actualizarReloj(){const a=new Date();document.getElementById('horaActual').textContent=String(a.getHours()).padStart(2,'0')+':'+String(a.getMinutes()).padStart(2,'0')+':'+String(a.getSeconds()).padStart(2,'0');document.getElementById('fechaActual').textContent=a.toLocaleDateString('es-CL',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}
+let contadorEasterEgg=0,tiempoUltimoToque=0;function activarEasterEgg(){const a=Date.now();if(a-tiempoUltimoToque>1500)contadorEasterEgg=0;tiempoUltimoToque=a;if(++contadorEasterEgg>=5){document.getElementById('acercaDe').style.display='flex';contadorEasterEgg=0}}function cerrarAcerca(){document.getElementById('acercaDe').style.display='none'}
+window.addEventListener('online',()=>{actualizarEstado();sincronizarPendientes()});window.addEventListener('offline',actualizarEstado);window.addEventListener('load',()=>{renderTanques();actualizarReloj();setInterval(actualizarReloj,1000);setInterval(()=>{if(navigator.onLine&&leerCola().length&&!sincronizando)sincronizarPendientes()},10000);actualizarEstado();try{const p=sessionStorage.getItem('integradores_panel');if(['integradores','niveles','estado'].includes(p))mostrarPanel(p)}catch(e){}if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js');if(navigator.onLine)setTimeout(sincronizarPendientes,1200)});
 </script>
 </body>
 </html>
