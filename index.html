@@ -128,17 +128,16 @@ const API_NIVELES='https://minicierre.momocrackcorp.workers.dev/';
 const CLAVE_COLA='integradores_cola_pwa_v1';
 const ALTURA_UTIL_CM=740;
 
-// Factores ocultos de interfaz. La edición final debe quedar protegida en backend/configuración.
 const TANQUES=[
   {tag:'D62',factor:93,familia:'D62-D70'},
   {tag:'D64',factor:93,familia:'D62-D70'},
   {tag:'D66',factor:93,familia:'D62-D70'},
   {tag:'D68',factor:93,familia:'D62-D70'},
   {tag:'D70',factor:93,familia:'D62-D70'},
-  {tag:'D74',factor:null,familia:'D74-D76'},
-  {tag:'D76',factor:null,familia:'D74-D76'},
-  {tag:'D84',factor:null,familia:'D84-D86'},
-  {tag:'D86',factor:null,familia:'D84-D86'}
+  {tag:'D74',factor:62,familia:'D74-D76'},
+  {tag:'D76',factor:62,familia:'D74-D76'},
+  {tag:'D84',factor:62,familia:'D84-D86'},
+  {tag:'D86',factor:62,familia:'D84-D86'}
 ];
 
 let sincronizando=false;
@@ -182,7 +181,7 @@ function renderTanques(){
     <div class="tanque">
       <div class="tanque-head">
         <span class="tanque-tag">${t.tag}</span>
-        <span class="tanque-factor">${t.factor===null?'Factor de aforo pendiente':'Aforo patrón protegido'}</span>
+        <span class="tanque-factor">Aforo protegido · ${t.factor} L/cm</span>
       </div>
       <div class="nivel-row">
         <input id="nivel_${t.tag}" class="nivel-input" type="tel" inputmode="numeric" pattern="[0-9]*"
@@ -209,7 +208,7 @@ function calcularNivel(i,el){
     pct.textContent='Fuera de rango';lit.textContent='—';est.textContent='Debe estar entre 0 y 740 cm';est.classList.add('invalido');return;
   }
   pct.textContent=(cm/ALTURA_UTIL_CM*100).toLocaleString('es-CL',{minimumFractionDigits:1,maximumFractionDigits:1})+' %';
-  lit.textContent=t.factor===null?'Factor pendiente':Math.round(cm*t.factor).toLocaleString('es-CL')+' L';
+  lit.textContent=Math.round(cm*t.factor).toLocaleString('es-CL')+' L';
   est.textContent='Pendiente de guardar';
 }
 
@@ -228,7 +227,7 @@ function guardarNiveles(){
       cm,
       porcentaje:Number((cm/ALTURA_UTIL_CM*100).toFixed(2)),
       factorLitrosCm:t.factor,
-      litrosEstimados:t.factor===null?null:Math.round(cm*t.factor)
+      litrosEstimados:Math.round(cm*t.factor)
     });
   }
   if(!mediciones.length){mostrarMensaje('mensajeNiveles','Ingrese al menos un nivel.',false);return}
