@@ -1,1 +1,391 @@
-<!DOCTYPE html> <html lang="es"> <head> <meta charset="utf-8"> <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"> <meta name="theme-color" content="#0d6b38"> <meta name="mobile-web-app-capable" content="yes"> <meta name="apple-mobile-web-app-capable" content="yes"> <meta name="apple-mobile-web-app-title" content="Integradores"> <title>Integradores</title> <link rel="manifest" href="manifest.json"> <link rel="icon" href="icon-192.png"> <link rel="apple-touch-icon" href="icon-192.png"> <style> *{box-sizing:border-box} html{background:#084c28} body{margin:0;padding:34px 4px 4px;min-height:100vh;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(180deg,#0d6b38 0%,#084c28 100%);color:#222} @supports (padding:max(0px)){body{padding-top:max(34px,calc(env(safe-area-inset-top) + 10px))}} .contenedor{width:100%;max-width:520px;margin:0 auto;background:#fff;border:2px solid #063f23;border-top-width:5px;border-radius:18px;overflow:hidden;box-shadow:0 6px 18px rgba(0,0,0,.22)} .cabecera{padding:5px 14px 7px;text-align:center;background:linear-gradient(180deg,#fff 0%,#eef5f0 100%);border-bottom:3px solid #0d6b38} .logo{display:block;width:100%;max-width:148px;height:auto;margin:0 auto 1px} .titulo{margin:0;font-size:23px;line-height:1.05;font-weight:900;color:#0d6b38} .subtitulo{margin-top:2px;font-size:13px;line-height:1.1;font-weight:700;color:#5f5f5f} .tabs{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid #d8e5dc;background:#fff} .tab{height:42px;border:0;border-bottom:3px solid transparent;background:#fff;color:#66796c;font-size:13px;font-weight:900} .tab.activa{color:#0d6b38;border-bottom-color:#15934e;background:#f6faf7} .panel{display:none}.panel.activo{display:block} .contenido{padding:10px 13px 12px} .grupo{margin-bottom:6px} label{display:block;margin-bottom:4px;font-size:16px;line-height:1.05;font-weight:900} input{width:100%;height:52px;padding:5px 12px;font-size:24px;font-weight:900;color:#111;background:#fafafa;border:2px solid #b4c2b7;border-radius:11px} input:focus{outline:none;background:#fff;border-color:#0d6b38;box-shadow:0 0 0 3px rgba(13,107,56,.14)} input::placeholder{font-size:17px;font-weight:600;color:#aaa} .boton{width:100%;height:56px;margin-top:7px;padding:0 10px;border:0;border-radius:12px;background:linear-gradient(180deg,#15934e 0%,#0d6b38 100%);color:#fff;font-size:20px;line-height:1;white-space:nowrap;font-weight:900;box-shadow:0 3px 9px rgba(13,107,56,.25)} .boton:active{transform:scale(.98)} .mensaje{min-height:24px;margin-top:8px;text-align:center;font-size:15px;line-height:1.2;font-weight:900} .ok{color:#0d6b38}.error{color:#c62828}.pendiente{color:#c77800} .estado{display:flex;justify-content:center;align-items:center;gap:7px;margin-top:7px;padding:8px;border-radius:12px;font-size:14px;font-weight:900;background:#f3f3f3} .punto{width:11px;height:11px;border-radius:50%}.online .punto{background:#15934e}.offline .punto{background:#d32f2f}.sincronizando .punto{background:#e69a00} .reset{width:100%;height:38px;margin-top:6px;border:1px solid #c9c9c9;border-radius:10px;background:#f5f5f5;color:#555;font-size:14px;font-weight:900} .reloj{margin-top:10px;padding:8px;text-align:center;background:#eef5f0;border:1px solid #d3e1d6;border-radius:13px} #horaActual{font-size:28px;line-height:1;font-weight:900;letter-spacing:2px;color:#0d6b38} #fechaActual{margin-top:3px;font-size:13px;font-weight:700;color:#555} .pie{margin-top:5px;padding:5px;text-align:center;font-size:12px;font-weight:800;color:#777;user-select:none} .info{margin-bottom:10px;padding:9px 10px;border:1px solid #d3e1d6;border-left:4px solid #15934e;border-radius:12px;background:#f5faf6;color:#4d6255;font-size:12px;line-height:1.35} .tanque{margin-bottom:7px;padding:9px;border:1px solid #d8e5dc;border-radius:12px;background:#fff;box-shadow:0 2px 6px rgba(13,107,56,.05)} .tanque-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px} .tanque-tag{padding:5px 12px;border-radius:8px;background:linear-gradient(180deg,#15934e,#0d6b38);color:#fff;font-size:18px;font-weight:900} .tanque-factor{font-size:10px;color:#738179;font-weight:800} .nivel-row{display:grid;grid-template-columns:1fr 56px;gap:7px} .nivel-input{height:48px;background:#fff4b8;text-align:center;font-size:23px} .unidad{display:flex;align-items:center;justify-content:center;border:1px solid #d8e5dc;border-radius:11px;background:#f4f7f5;color:#68796e;font-weight:900} .resultados{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px} .resultado{padding:8px;border:1px solid #dce8e0;border-radius:10px;background:#f8fbf9;text-align:center} .resultado .k{font-size:9px;color:#728279;font-weight:900}.resultado .v{margin-top:3px;font-size:17px;color:#0d6b38;font-weight:900} .estado-tanque{margin-top:7px;padding:5px 7px;border-radius:7px;background:#fff8db;color:#886b00;font-size:10px} .estado-tanque.guardado{background:#edf8f0;color:#0d6b38}.estado-tanque.invalido{background:#fdecec;color:#b32626} .acerca{display:none;position:fixed;inset:0;padding:20px;align-items:center;justify-content:center;background:rgba(0,0,0,.9);z-index:99999} .acerca-contenido{width:100%;max-width:460px;padding:24px 20px;text-align:center;background:#050505;border:4px solid #ffe500;border-radius:22px} .acerca-titulo{margin-bottom:18px;font-size:29px;font-weight:900;color:#ffe500}.oa{font-size:27px;font-weight:900;letter-spacing:4px;color:#fff}.waka{margin-top:13px;font-size:17px;font-weight:900;color:#ffe500}.cerrar-acerca{width:100%;height:58px;margin-top:22px;border:0;border-radius:12px;background:#ffe500;color:#111;font-size:20px;font-weight:900} #panelIntegradores .contenido{min-height:calc(100svh - 220px);display:flex;flex-direction:column;padding:15px 13px 18px} #panelIntegradores .grupo{margin-bottom:0} #panelIntegradores .grupo+.grupo{margin-top:13px} #panelIntegradores .boton{margin-top:auto} @media (max-width:420px){ body{padding:34px 3px 3px} .contenedor{border-radius:16px} .cabecera{padding-top:4px} .logo{max-width:138px} .titulo{font-size:22px} .subtitulo{font-size:12.5px} .tab{height:40px;font-size:12.5px} .contenido{padding:9px 12px 11px} label{font-size:15.5px} input{height:50px;font-size:23px} .boton{height:54px;font-size:19px} #panelIntegradores .contenido{min-height:calc(100svh - 230px);padding:14px 12px 17px} #panelIntegradores .grupo+.grupo{margin-top:12px} } </style> </head> <body> <div class="contenedor"> <div class="cabecera"> <img class="logo" src="logo-masisa.png" alt="MASISA"> <h1 class="titulo">Integradores</h1> <div class="subtitulo">Registro de consumos y niveles</div> </div> <nav class="tabs"> <button id="tabIntegradores" class="tab activa" onclick="mostrarPanel('integradores')">Integradores</button> <button id="tabNiveles" class="tab" onclick="mostrarPanel('niveles')">Niveles</button> <button id="tabEstado" class="tab" onclick="mostrarPanel('estado')">Estado</button> </nav> <section id="panelIntegradores" class="panel activo"> <div class="contenido"> <div class="grupo"><label for="resina">Resina</label><input id="resina" type="tel" inputmode="numeric" pattern="[0-9]*" placeholder="Ingrese valor" autocomplete="off"></div> <div class="grupo"><label for="secuestrante">Secuestrante</label><input id="secuestrante" type="tel" inputmode="numeric" pattern="[0-9]*" placeholder="Ingrese valor" autocomplete="off"></div> <div class="grupo"><label for="f900">F900</label><input id="f900" type="tel" inputmode="numeric" pattern="[0-9]*" placeholder="Ingrese valor" autocomplete="off"></div> <div class="grupo"><label for="emulsion1">Emulsión 1 Quimtec</label><input id="emulsion1" type="tel" inputmode="numeric" pattern="[0-9]*" placeholder="Ingrese valor" autocomplete="off"></div> <div class="grupo"><label for="emulsion2">Emulsión 2 Quimtec</label><input id="emulsion2" type="tel" inputmode="numeric" pattern="[0-9]*" placeholder="Ingrese valor" autocomplete="off"></div> <button class="boton" onclick="guardarIntegradores()">GUARDAR INTEGRADORES</button> <div id="mensajeIntegradores" class="mensaje"></div> </div> </section> <section id="panelNiveles" class="panel"> <div class="contenido"> <div class="info"><b>Nivel terreno.</b> Ingrese centímetros enteros entre 0 y 740. El teléfono abrirá teclado numérico. Los cálculos mostrados son de apoyo; al sincronizar se enviará la lectura en cm al sistema central.</div> <div id="listaTanques"></div> <button class="boton" onclick="guardarNiveles()">GUARDAR MEDICIONES</button> <div id="mensajeNiveles" class="mensaje"></div> </div> </section> <section id="panelEstado" class="panel"> <div class="contenido"> <div id="estadoConexion" class="estado online"><div class="punto"></div><span id="textoEstado">EN LÍNEA — Pendientes: 0</span></div> <button class="reset" onclick="resetearCola()">RESET PENDIENTES</button> <div class="reloj"><div id="horaActual">--:--:--</div><div id="fechaActual">Cargando fecha...</div></div> <div class="info" style="margin-top:10px">La cola local es común para Integradores y Niveles. Si el equipo queda sin señal, los registros permanecen en este dispositivo y se reintentan automáticamente.</div> <div class="pie" onclick="activarEasterEgg()">MASISA</div> </div> </section> </div> <div id="acercaDe" class="acerca"> <div class="acerca-contenido"> <div class="acerca-titulo">ACERCA DE</div> <div class="oa">OA MMXXVI</div> <div class="waka">WAKAWAKAWAKAWAKAWAKA</div> <button class="cerrar-acerca" onclick="cerrarAcerca()">CERRAR</button> </div> </div> <script> const API_INTEGRADORES='https://floral-cherry-8db2.momocrackcorp.workers.dev/'; const API_NIVELES='https://minicierre.momocrackcorp.workers.dev/'; const CLAVE_COLA='integradores_cola_pwa_v1'; const ALTURA_UTIL_CM=740; const TANQUES=[ {tag:'D62',factor:93,familia:'D62-D70'}, {tag:'D64',factor:93,familia:'D62-D70'}, {tag:'D66',factor:93,familia:'D62-D70'}, {tag:'D68',factor:93,familia:'D62-D70'}, {tag:'D70',factor:93,familia:'D62-D70'}, {tag:'D74',factor:62,familia:'D74-D76'}, {tag:'D76',factor:62,familia:'D74-D76'}, {tag:'D84',factor:62,familia:'D84-D86'}, {tag:'D86',factor:62,familia:'D84-D86'} ]; let sincronizando=false; function mostrarPanel(nombre){ ['integradores','niveles','estado'].forEach(x=>{ document.getElementById('panel'+x[0].toUpperCase()+x.slice(1)).classList.toggle('activo',x===nombre); document.getElementById('tab'+x[0].toUpperCase()+x.slice(1)).classList.toggle('activa',x===nombre); }); try{sessionStorage.setItem('integradores_panel',nombre)}catch(e){} } function generarId(){return (window.crypto&&window.crypto.randomUUID)?window.crypto.randomUUID():Date.now().toString(36)+'-'+Math.random().toString(36).slice(2)} function leerCola(){try{return JSON.parse(localStorage.getItem(CLAVE_COLA)||'[]')}catch(e){return[]}} function guardarCola(c){localStorage.setItem(CLAVE_COLA,JSON.stringify(c));actualizarEstado()} function mostrarMensaje(id,t,tipo){const m=document.getElementById(id);m.textContent=t;m.className='mensaje '+(tipo==='pendiente'?'pendiente':(tipo?'ok':'error'))} function obtenerDatosIntegradores(){ return[ {tipo:'RESINA',valor:document.getElementById('resina').value.trim()}, {tipo:'SECUESTRANTE',valor:document.getElementById('secuestrante').value.trim()}, {tipo:'F900',valor:document.getElementById('f900').value.trim()}, {tipo:'EMULSION_1',valor:document.getElementById('emulsion1').value.trim()}, {tipo:'EMULSION_2',valor:document.getElementById('emulsion2').value.trim()} ].filter(d=>d.valor!==''); } function limpiarIntegradores(){['resina','secuestrante','f900','emulsion1','emulsion2'].forEach(id=>document.getElementById(id).value='')} function guardarIntegradores(){ const datos=obtenerDatosIntegradores(); if(!datos.length){mostrarMensaje('mensajeIntegradores','Debe ingresar al menos un valor.',false);return} if(datos.some(d=>!/^[0-9]+$/.test(d.valor))){mostrarMensaje('mensajeIntegradores','Ingrese solamente números.',false);return} encolar({modulo:'INTEGRADORES',datos}); limpiarIntegradores(); mostrarMensaje('mensajeIntegradores',navigator.onLine?'✓ Guardado. Sincronizando...':'✓ Guardado en el teléfono. Pendiente de sincronizar.',navigator.onLine?true:'pendiente'); } function renderTanques(){ const root=document.getElementById('listaTanques'); root.innerHTML=TANQUES.map((t,i)=>` <div class="tanque"> <div class="tanque-head"> <span class="tanque-tag">${t.tag}</span> <span class="tanque-factor">Aforo patrón protegido</span> </div> <div class="nivel-row"> <input id="nivel_${t.tag}" class="nivel-input" type="tel" inputmode="numeric" pattern="[0-9]*" maxlength="3" placeholder="0 - 740" autocomplete="off" enterkeyhint="next" oninput="calcularNivel(${i},this)"> <div class="unidad">cm</div> </div> <div class="resultados"> <div class="resultado"><div class="k">NIVEL TERRENO</div><div class="v" id="pct_${t.tag}">—</div></div> <div class="resultado"><div class="k">CONTENIDO EST.</div><div class="v" id="lit_${t.tag}">—</div></div> </div> <div id="estado_${t.tag}" class="estado-tanque">Sin lectura</div> </div>`).join(''); } function calcularNivel(i,el){ const t=TANQUES[i]; el.value=el.value.replace(/\D/g,'').slice(0,3); const pct=document.getElementById('pct_'+t.tag),lit=document.getElementById('lit_'+t.tag),est=document.getElementById('estado_'+t.tag); est.className='estado-tanque'; if(el.value===''){pct.textContent='—';lit.textContent='—';est.textContent='Sin lectura';return} const cm=parseInt(el.value,10); if(!Number.isInteger(cm)||cm<0||cm>ALTURA_UTIL_CM){ pct.textContent='Fuera de rango';lit.textContent='—';est.textContent='Debe estar entre 0 y 740 cm';est.classList.add('invalido');return; } pct.textContent=(cm/ALTURA_UTIL_CM*100).toLocaleString('es-CL',{minimumFractionDigits:1,maximumFractionDigits:1})+' %'; lit.textContent=Math.round(cm*t.factor).toLocaleString('es-CL')+' L'; est.textContent='Pendiente de guardar'; } function guardarNiveles(){ const mediciones=[]; for(const t of TANQUES){ const el=document.getElementById('nivel_'+t.tag); if(!el||el.value==='')continue; const cm=parseInt(el.value,10); if(!Number.isInteger(cm)||cm<0||cm>ALTURA_UTIL_CM){ mostrarMensaje('mensajeNiveles','Revise las lecturas: deben ser enteros entre 0 y 740 cm.',false);return; } mediciones.push({ tipo:'NIVEL_TERRENO', estanque:t.tag, cm, porcentaje:Number((cm/ALTURA_UTIL_CM*100).toFixed(2)), factorLitrosCm:t.factor, litrosEstimados:Math.round(cm*t.factor) }); } if(!mediciones.length){mostrarMensaje('mensajeNiveles','Ingrese al menos un nivel.',false);return} encolar({modulo:'NIVELES_TANQUES',datos:mediciones}); mediciones.forEach(m=>{ const e=document.getElementById('estado_'+m.estanque); if(e){e.textContent='Guardado en cola · pendiente de sincronizar';e.className='estado-tanque guardado'} const input=document.getElementById('nivel_'+m.estanque);if(input)input.value=''; document.getElementById('pct_'+m.estanque).textContent='—'; document.getElementById('lit_'+m.estanque).textContent='—'; }); mostrarMensaje('mensajeNiveles',navigator.onLine?'✓ Mediciones guardadas. Sincronizando...':'✓ Guardadas en el teléfono. Pendientes de sincronizar.',navigator.onLine?true:'pendiente'); } function encolar(parcial){ const lote={id:generarId(),fechaTelefono:new Date().toISOString(),...parcial}; const cola=leerCola();cola.push(lote);guardarCola(cola); if(navigator.onLine)sincronizarPendientes(); } function resetearCola(){ const n=leerCola().length; if(!n){mostrarMensaje('mensajeIntegradores','No hay pendientes para resetear.',true);return} if(!confirm('Se eliminarán '+n+' registro(s) pendiente(s) SOLO de este dispositivo. Esto no borra datos ya enviados. ¿Continuar?'))return; localStorage.removeItem(CLAVE_COLA);sincronizando=false;actualizarEstado(); mostrarMensaje('mensajeIntegradores','✓ Pendientes locales eliminados.',true); } async function enviarApi(lote){ const baseUrl=lote && lote.modulo==='NIVELES_TANQUES' ? API_NIVELES : API_INTEGRADORES; const url=baseUrl+'?lote='+encodeURIComponent(JSON.stringify(lote))+'&t='+Date.now(); const respuesta=await fetch(url,{method:'GET',cache:'no-store'}); let datos;try{datos=await respuesta.json()}catch(e){throw new Error('Respuesta inválida del servidor')} if(!respuesta.ok||!datos||!datos.ok)throw new Error((datos&&datos.error)||('Error HTTP '+respuesta.status)); return datos; } async function sincronizarPendientes(){ if(sincronizando||!navigator.onLine)return; let cola=leerCola(); if(!cola.length){actualizarEstado();return} sincronizando=true;actualizarEstado(); const lote=cola[0]; try{ await enviarApi(lote); cola=leerCola().filter(x=>x.id!==lote.id);guardarCola(cola);sincronizando=false; if(cola.length)sincronizarPendientes();else actualizarEstado(); }catch(e){ sincronizando=false;actualizarEstado(); const target=lote.modulo==='NIVELES_TANQUES'?'mensajeNiveles':'mensajeIntegradores'; mostrarMensaje(target,'Error sincronización: '+e.message,'pendiente'); } } function actualizarEstado(){ const n=leerCola().length,cuadro=document.getElementById('estadoConexion'),texto=document.getElementById('textoEstado'); if(sincronizando){cuadro.className='estado sincronizando';texto.textContent='SINCRONIZANDO — Pendientes: '+n} else if(navigator.onLine){cuadro.className='estado online';texto.textContent='EN LÍNEA — Pendientes: '+n} else{cuadro.className='estado offline';texto.textContent='SIN CONEXIÓN — Pendientes: '+n} } function actualizarReloj(){ const a=new Date(); document.getElementById('horaActual').textContent=String(a.getHours()).padStart(2,'0')+':'+String(a.getMinutes()).padStart(2,'0')+':'+String(a.getSeconds()).padStart(2,'0'); document.getElementById('fechaActual').textContent=a.toLocaleDateString('es-CL',{weekday:'long',day:'numeric',month:'long',year:'numeric'}); } let contadorEasterEgg=0,tiempoUltimoToque=0; function activarEasterEgg(){const a=Date.now();if(a-tiempoUltimoToque>1500)contadorEasterEgg=0;tiempoUltimoToque=a;if(++contadorEasterEgg>=5){document.getElementById('acercaDe').style.display='flex';contadorEasterEgg=0}} function cerrarAcerca(){document.getElementById('acercaDe').style.display='none'} window.addEventListener('online',()=>{actualizarEstado();sincronizarPendientes()}); window.addEventListener('offline',actualizarEstado); window.addEventListener('load',()=>{ renderTanques(); actualizarReloj();setInterval(actualizarReloj,1000); setInterval(()=>{if(navigator.onLine&&leerCola().length&&!sincronizando)sincronizarPendientes()},10000); actualizarEstado(); try{const p=sessionStorage.getItem('integradores_panel');if(['integradores','niveles','estado'].includes(p))mostrarPanel(p)}catch(e){} if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js'); if(navigator.onLine)setTimeout(sincronizarPendientes,1200); }); </script> </body> </html>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#0d6b38">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Integradores">
+<title>Integradores</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+*{box-sizing:border-box}
+html{background:#084c28}
+body{margin:0;padding:34px 4px 4px;min-height:100vh;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(180deg,#0d6b38 0%,#084c28 100%);color:#222}
+@supports (padding:max(0px)){body{padding-top:max(34px,calc(env(safe-area-inset-top) + 10px))}}
+.contenedor{width:100%;max-width:520px;margin:0 auto;background:#fff;border:2px solid #063f23;border-top-width:5px;border-radius:18px;overflow:hidden;box-shadow:0 6px 18px rgba(0,0,0,.22)}
+.cabecera{padding:5px 14px 7px;text-align:center;background:linear-gradient(180deg,#fff 0%,#eef5f0 100%);border-bottom:3px solid #0d6b38}
+.logo{display:block;width:100%;max-width:148px;height:auto;margin:0 auto 1px}
+.titulo{margin:0;font-size:23px;line-height:1.05;font-weight:900;color:#0d6b38}
+.subtitulo{margin-top:2px;font-size:13px;line-height:1.1;font-weight:700;color:#5f5f5f}
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid #d8e5dc;background:#fff}
+.tab{height:42px;border:0;border-bottom:3px solid transparent;background:#fff;color:#66796c;font-size:13px;font-weight:900}
+.tab.activa{color:#0d6b38;border-bottom-color:#15934e;background:#f6faf7}
+.panel{display:none}.panel.activo{display:block}
+.contenido{padding:10px 13px 12px}
+.grupo{margin-bottom:6px}
+label{display:block;margin-bottom:4px;font-size:16px;line-height:1.05;font-weight:900}
+input{width:100%;height:52px;padding:5px 12px;font-size:24px;font-weight:900;color:#111;background:#fafafa;border:2px solid #b4c2b7;border-radius:11px}
+input:focus{outline:none;background:#fff;border-color:#0d6b38;box-shadow:0 0 0 3px rgba(13,107,56,.14)}
+input::placeholder{font-size:17px;font-weight:600;color:#aaa}
+.boton{width:100%;height:56px;margin-top:7px;padding:0 10px;border:0;border-radius:12px;background:linear-gradient(180deg,#15934e 0%,#0d6b38 100%);color:#fff;font-size:20px;line-height:1;white-space:nowrap;font-weight:900;box-shadow:0 3px 9px rgba(13,107,56,.25)}
+.boton:active{transform:scale(.98)}
+.mensaje{min-height:24px;margin-top:8px;text-align:center;font-size:15px;line-height:1.2;font-weight:900}
+.ok{color:#0d6b38}.error{color:#c62828}.pendiente{color:#c77800}
+.estado{display:flex;justify-content:center;align-items:center;gap:7px;margin-top:7px;padding:8px;border-radius:12px;font-size:14px;font-weight:900;background:#f3f3f3}
+.punto{width:11px;height:11px;border-radius:50%}.online .punto{background:#15934e}.offline .punto{background:#d32f2f}.sincronizando .punto{background:#e69a00}
+.reset{width:100%;height:38px;margin-top:6px;border:1px solid #c9c9c9;border-radius:10px;background:#f5f5f5;color:#555;font-size:14px;font-weight:900}
+.reloj{margin-top:10px;padding:8px;text-align:center;background:#eef5f0;border:1px solid #d3e1d6;border-radius:13px}
+#horaActual{font-size:28px;line-height:1;font-weight:900;letter-spacing:2px;color:#0d6b38}
+#fechaActual{margin-top:3px;font-size:13px;font-weight:700;color:#555}
+.pie{margin-top:5px;padding:5px;text-align:center;font-size:12px;font-weight:800;color:#777;user-select:none}
+.info{margin-bottom:10px;padding:9px 10px;border:1px solid #d3e1d6;border-left:4px solid #15934e;border-radius:12px;background:#f5faf6;color:#4d6255;font-size:12px;line-height:1.35}
+.tanque{margin-bottom:7px;padding:9px;border:1px solid #d8e5dc;border-radius:12px;background:#fff;box-shadow:0 2px 6px rgba(13,107,56,.05)}
+.tanque-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.tanque-tag{padding:5px 12px;border-radius:8px;background:linear-gradient(180deg,#15934e,#0d6b38);color:#fff;font-size:18px;font-weight:900}
+.tanque-factor{font-size:10px;color:#738179;font-weight:800}
+.nivel-row{display:grid;grid-template-columns:1fr 56px;gap:7px}
+.nivel-input{height:48px;background:#fff4b8;text-align:center;font-size:23px}
+.unidad{display:flex;align-items:center;justify-content:center;border:1px solid #d8e5dc;border-radius:11px;background:#f4f7f5;color:#68796e;font-weight:900}
+.resultados{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px}
+.resultado{padding:8px;border:1px solid #dce8e0;border-radius:10px;background:#f8fbf9;text-align:center}
+.resultado .k{font-size:9px;color:#728279;font-weight:900}.resultado .v{margin-top:3px;font-size:17px;color:#0d6b38;font-weight:900}
+.estado-tanque{margin-top:7px;padding:5px 7px;border-radius:7px;background:#fff8db;color:#886b00;font-size:10px}
+.estado-tanque.guardado{background:#edf8f0;color:#0d6b38}.estado-tanque.invalido{background:#fdecec;color:#b32626}
+.acerca{display:none;position:fixed;inset:0;padding:20px;align-items:center;justify-content:center;background:rgba(0,0,0,.9);z-index:99999}
+.acerca-contenido{width:100%;max-width:460px;padding:24px 20px;text-align:center;background:#050505;border:4px solid #ffe500;border-radius:22px}
+.acerca-titulo{margin-bottom:18px;font-size:29px;font-weight:900;color:#ffe500}.oa{font-size:27px;font-weight:900;letter-spacing:4px;color:#fff}.waka{margin-top:13px;font-size:17px;font-weight:900;color:#ffe500}.cerrar-acerca{width:100%;height:58px;margin-top:22px;border:0;border-radius:12px;background:#ffe500;color:#111;font-size:20px;font-weight:900}
+#panelIntegradores .contenido{min-height:calc(100svh - 220px);display:flex;flex-direction:column;padding:15px 13px 18px}
+#panelIntegradores .grupo{margin-bottom:0}
+#panelIntegradores .grupo+.grupo{margin-top:11px}
+#panelIntegradores .boton{margin-top:12px}
+.delta-info{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;padding:5px 4px 0;font-size:10.5px;line-height:1.2;color:#8a918d}
+.delta-anterior{color:#8b918e}.delta-anterior b{color:#69736e;font-weight:900}
+.delta-valor{font-weight:900;color:#13804a}.delta-valor.negativo{color:#b32626}
+.relacion-rs{margin:10px 0 4px;padding:9px 10px;border:1px solid #d8e4dc;border-radius:11px;background:#f5f8f6;text-align:center}
+.relacion-rs .k{font-size:9px;color:#818b85;font-weight:900;text-transform:uppercase;letter-spacing:.4px}
+.relacion-rs .v{margin-top:2px;font-size:22px;line-height:1.05;color:#0d6b38;font-weight:950}
+.relacion-rs .n{margin-top:2px;font-size:10.5px;color:#68736d;font-weight:900}
+.origen-anterior{margin-top:4px;text-align:center;font-size:9px;color:#98a19d;font-weight:700}
+@media (max-width:420px){
+ body{padding:34px 3px 3px}.contenedor{border-radius:16px}.cabecera{padding-top:4px}.logo{max-width:138px}.titulo{font-size:22px}.subtitulo{font-size:12.5px}.tab{height:40px;font-size:12.5px}.contenido{padding:9px 12px 11px}label{font-size:15.5px}input{height:50px;font-size:23px}.boton{height:54px;font-size:19px}#panelIntegradores .contenido{min-height:calc(100svh - 230px);padding:14px 12px 17px}#panelIntegradores .grupo+.grupo{margin-top:10px}.delta-info{font-size:10px}.relacion-rs .v{font-size:21px}
+}
+</style>
+</head>
+<body>
+<div class="contenedor">
+  <div class="cabecera">
+    <img class="logo" src="logo-masisa.png" alt="MASISA">
+    <h1 class="titulo">Integradores</h1>
+    <div class="subtitulo">Registro de consumos y niveles</div>
+  </div>
+  <nav class="tabs">
+    <button id="tabIntegradores" class="tab activa" onclick="mostrarPanel('integradores')">Integradores</button>
+    <button id="tabNiveles" class="tab" onclick="mostrarPanel('niveles')">Niveles</button>
+    <button id="tabEstado" class="tab" onclick="mostrarPanel('estado')">Estado</button>
+  </nav>
+
+  <section id="panelIntegradores" class="panel activo">
+    <div class="contenido">
+      <div class="grupo">
+        <label for="resina">Resina</label>
+        <input id="resina" type="tel" inputmode="numeric" pattern="[0-9]*" placeholder="Ingrese valor" autocomplete="off">
+        <div class="delta-info"><span class="delta-anterior">Anterior: <b id="ant_resina">Cargando...</b></span><span id="dif_resina" class="delta-valor">Δ —</span></div>
+      </div>
+      <div class="grupo">
+        <label for="secuestrante">Secuestrante</label>
+        <input id="secuestrante" type="tel" inputmode="numeric" pattern="[0-9]*" placeholder="Ingrese valor" autocomplete="off">
+        <div class="delta-info"><span class="delta-anterior">Anterior: <b id="ant_secuestrante">Cargando...</b></span><span id="dif_secuestrante" class="delta-valor">Δ —</span></div>
+      </div>
+
+      <div class="relacion-rs">
+        <div class="k">Relación del consumo</div>
+        <div id="relacionValor" class="v">— / —</div>
+        <div class="n">Resina / Secuestrante</div>
+        <div id="origenAnterior" class="origen-anterior">Consultando último registro...</div>
+      </div>
+
+      <div class="grupo">
+        <label for="f900">F900</label>
+        <input id="f900" type="tel" inputmode="numeric" pattern="[0-9]*" placeholder="Ingrese valor" autocomplete="off">
+        <div class="delta-info"><span class="delta-anterior">Anterior: <b id="ant_f900">Cargando...</b></span><span id="dif_f900" class="delta-valor">Δ —</span></div>
+      </div>
+      <div class="grupo">
+        <label for="emulsion1">Emulsión 1 Quimtec</label>
+        <input id="emulsion1" type="tel" inputmode="numeric" pattern="[0-9]*" placeholder="Ingrese valor" autocomplete="off">
+        <div class="delta-info"><span class="delta-anterior">Anterior: <b id="ant_emulsion1">Cargando...</b></span><span id="dif_emulsion1" class="delta-valor">Δ —</span></div>
+      </div>
+      <div class="grupo">
+        <label for="emulsion2">Emulsión 2 Quimtec</label>
+        <input id="emulsion2" type="tel" inputmode="numeric" pattern="[0-9]*" placeholder="Ingrese valor" autocomplete="off">
+        <div class="delta-info"><span class="delta-anterior">Anterior: <b id="ant_emulsion2">Cargando...</b></span><span id="dif_emulsion2" class="delta-valor">Δ —</span></div>
+      </div>
+      <button class="boton" onclick="guardarIntegradores()">GUARDAR INTEGRADORES</button>
+      <div id="mensajeIntegradores" class="mensaje"></div>
+    </div>
+  </section>
+
+  <section id="panelNiveles" class="panel">
+    <div class="contenido">
+      <div class="info"><b>Nivel terreno.</b> Ingrese centímetros enteros entre 0 y 740. El teléfono abrirá teclado numérico. Los cálculos mostrados son de apoyo; al sincronizar se enviará la lectura en cm al sistema central.</div>
+      <div id="listaTanques"></div>
+      <button class="boton" onclick="guardarNiveles()">GUARDAR MEDICIONES</button>
+      <div id="mensajeNiveles" class="mensaje"></div>
+    </div>
+  </section>
+
+  <section id="panelEstado" class="panel">
+    <div class="contenido">
+      <div id="estadoConexion" class="estado online"><div class="punto"></div><span id="textoEstado">EN LÍNEA — Pendientes: 0</span></div>
+      <button class="reset" onclick="resetearCola()">RESET PENDIENTES</button>
+      <div class="reloj"><div id="horaActual">--:--:--</div><div id="fechaActual">Cargando fecha...</div></div>
+      <div class="info" style="margin-top:10px">La cola local es común para Integradores y Niveles. Si el equipo queda sin señal, los registros permanecen en este dispositivo y se reintentan automáticamente.</div>
+      <div class="pie" onclick="activarEasterEgg()">MASISA</div>
+    </div>
+  </section>
+</div>
+
+<div id="acercaDe" class="acerca">
+  <div class="acerca-contenido">
+    <div class="acerca-titulo">ACERCA DE</div>
+    <div class="oa">OA MMXXVI</div>
+    <div class="waka">WAKAWAKAWAKAWAKAWAKA</div>
+    <button class="cerrar-acerca" onclick="cerrarAcerca()">CERRAR</button>
+  </div>
+</div>
+
+<script>
+const API_INTEGRADORES='https://floral-cherry-8db2.momocrackcorp.workers.dev/';
+const API_NIVELES='https://minicierre.momocrackcorp.workers.dev/';
+const CLAVE_COLA='integradores_cola_pwa_v1';
+const ALTURA_UTIL_CM=740;
+const TANQUES=[
+ {tag:'D62',factor:93,familia:'D62-D70'},
+ {tag:'D64',factor:93,familia:'D62-D70'},
+ {tag:'D66',factor:93,familia:'D62-D70'},
+ {tag:'D68',factor:93,familia:'D62-D70'},
+ {tag:'D70',factor:93,familia:'D62-D70'},
+ {tag:'D74',factor:62,familia:'D74-D76'},
+ {tag:'D76',factor:62,familia:'D74-D76'},
+ {tag:'D84',factor:62,familia:'D84-D86'},
+ {tag:'D86',factor:62,familia:'D84-D86'}
+];
+
+const ULTIMOS_FALLBACK={
+  resina:85574445,
+  secuestrante:18436985,
+  f900:529797,
+  emulsion1:1798606,
+  emulsion2:null
+};
+let ultimosIntegradores={...ULTIMOS_FALLBACK};
+let sincronizando=false;
+
+function mostrarPanel(nombre){
+ ['integradores','niveles','estado'].forEach(x=>{
+  document.getElementById('panel'+x[0].toUpperCase()+x.slice(1)).classList.toggle('activo',x===nombre);
+  document.getElementById('tab'+x[0].toUpperCase()+x.slice(1)).classList.toggle('activa',x===nombre);
+ });
+ try{sessionStorage.setItem('integradores_panel',nombre)}catch(e){}
+}
+function generarId(){return (window.crypto&&window.crypto.randomUUID)?window.crypto.randomUUID():Date.now().toString(36)+'-'+Math.random().toString(36).slice(2)}
+function leerCola(){try{return JSON.parse(localStorage.getItem(CLAVE_COLA)||'[]')}catch(e){return[]}}
+function guardarCola(c){localStorage.setItem(CLAVE_COLA,JSON.stringify(c));actualizarEstado()}
+function mostrarMensaje(id,t,tipo){const m=document.getElementById(id);m.textContent=t;m.className='mensaje '+(tipo==='pendiente'?'pendiente':(tipo?'ok':'error'))}
+function fmtEntero(n){return Number(n).toLocaleString('es-CL',{maximumFractionDigits:0})}
+
+function valorRespuesta(obj,keys){
+ for(const k of keys){
+  if(obj && obj[k]!==undefined && obj[k]!==null && obj[k]!==''){
+   const n=Number(obj[k]);
+   if(Number.isFinite(n))return n;
+  }
+ }
+ return null;
+}
+
+function aplicarUltimosEnPantalla(origen){
+ const mapa={resina:'resina',secuestrante:'secuestrante',f900:'f900',emulsion1:'emulsion1',emulsion2:'emulsion2'};
+ Object.keys(mapa).forEach(id=>{
+  const el=document.getElementById('ant_'+id);
+  const v=ultimosIntegradores[id];
+  if(el)el.textContent=v===null||v===undefined?'Sin dato':fmtEntero(v)+' kg';
+ });
+ const origenEl=document.getElementById('origenAnterior');
+ if(origenEl)origenEl.textContent=origen==='online'?'Anterior: último registro de Fuente Online':'Anterior: último registro verificado · consulta online pendiente';
+ actualizarCalculosIntegradores();
+}
+
+async function cargarUltimosIntegradores(){
+ try{
+  const r=await fetch(API_INTEGRADORES+'?accion=ultimos&t='+Date.now(),{method:'GET',cache:'no-store'});
+  const d=await r.json();
+  if(!r.ok||!d||d.ok===false)throw new Error((d&&d.error)||('HTTP '+r.status));
+  const src=d.valores||d.ultimos||d.data||d;
+  const nuevos={
+   resina:valorRespuesta(src,['resina','RESINA','Resina']),
+   secuestrante:valorRespuesta(src,['secuestrante','SECUESTRANTE','Secuestrante']),
+   f900:valorRespuesta(src,['f900','F900','resina2','RESINA_2']),
+   emulsion1:valorRespuesta(src,['emulsion1','EMULSION_1','emulsion','EMULSION','Emulsion Quimtec']),
+   emulsion2:valorRespuesta(src,['emulsion2','EMULSION_2','Emulsion 2 Quimtec'])
+  };
+  if(nuevos.resina===null&&nuevos.secuestrante===null&&nuevos.f900===null&&nuevos.emulsion1===null&&nuevos.emulsion2===null)throw new Error('Respuesta sin valores');
+  ultimosIntegradores={...ULTIMOS_FALLBACK,...nuevos};
+  aplicarUltimosEnPantalla('online');
+ }catch(e){
+  ultimosIntegradores={...ULTIMOS_FALLBACK};
+  aplicarUltimosEnPantalla('fallback');
+ }
+}
+
+function deltaIntegrador(id){
+ const input=document.getElementById(id),out=document.getElementById('dif_'+id),anterior=ultimosIntegradores[id];
+ if(!input||!out)return null;
+ const txt=input.value.trim();
+ out.classList.remove('negativo');
+ if(!/^\d+$/.test(txt)||anterior===null||anterior===undefined){out.textContent='Δ —';return null}
+ const dif=Number(txt)-Number(anterior);
+ out.textContent='Δ '+fmtEntero(dif)+' kg';
+ if(dif<0)out.classList.add('negativo');
+ return dif;
+}
+
+function actualizarCalculosIntegradores(){
+ const r=deltaIntegrador('resina');
+ const s=deltaIntegrador('secuestrante');
+ deltaIntegrador('f900');
+ deltaIntegrador('emulsion1');
+ deltaIntegrador('emulsion2');
+ const rv=document.getElementById('relacionValor');
+ if(!rv)return;
+ if(r===null||s===null||r<0||s<0||(r+s)<=0){rv.textContent='— / —';return}
+ const total=r+s;
+ const pr=r/total*100,ps=s/total*100;
+ rv.textContent=pr.toLocaleString('es-CL',{minimumFractionDigits:1,maximumFractionDigits:1})+'% / '+ps.toLocaleString('es-CL',{minimumFractionDigits:1,maximumFractionDigits:1})+'%';
+}
+
+function obtenerDatosIntegradores(){
+ return[
+  {tipo:'RESINA',valor:document.getElementById('resina').value.trim()},
+  {tipo:'SECUESTRANTE',valor:document.getElementById('secuestrante').value.trim()},
+  {tipo:'F900',valor:document.getElementById('f900').value.trim()},
+  {tipo:'EMULSION_1',valor:document.getElementById('emulsion1').value.trim()},
+  {tipo:'EMULSION_2',valor:document.getElementById('emulsion2').value.trim()}
+ ].filter(d=>d.valor!=='');
+}
+function limpiarIntegradores(){['resina','secuestrante','f900','emulsion1','emulsion2'].forEach(id=>document.getElementById(id).value='');actualizarCalculosIntegradores()}
+function guardarIntegradores(){
+ const datos=obtenerDatosIntegradores();
+ if(!datos.length){mostrarMensaje('mensajeIntegradores','Debe ingresar al menos un valor.',false);return}
+ if(datos.some(d=>!/^[0-9]+$/.test(d.valor))){mostrarMensaje('mensajeIntegradores','Ingrese solamente números.',false);return}
+ encolar({modulo:'INTEGRADORES',datos});
+ limpiarIntegradores();
+ mostrarMensaje('mensajeIntegradores',navigator.onLine?'✓ Guardado. Sincronizando...':'✓ Guardado en el teléfono. Pendiente de sincronizar.',navigator.onLine?true:'pendiente');
+}
+
+function renderTanques(){
+ const root=document.getElementById('listaTanques');
+ root.innerHTML=TANQUES.map((t,i)=>`
+  <div class="tanque">
+   <div class="tanque-head"><span class="tanque-tag">${t.tag}</span><span class="tanque-factor">Aforo patrón protegido</span></div>
+   <div class="nivel-row"><input id="nivel_${t.tag}" class="nivel-input" type="tel" inputmode="numeric" pattern="[0-9]*" maxlength="3" placeholder="0 - 740" autocomplete="off" enterkeyhint="next" oninput="calcularNivel(${i},this)"><div class="unidad">cm</div></div>
+   <div class="resultados"><div class="resultado"><div class="k">NIVEL TERRENO</div><div class="v" id="pct_${t.tag}">—</div></div><div class="resultado"><div class="k">CONTENIDO EST.</div><div class="v" id="lit_${t.tag}">—</div></div></div>
+   <div id="estado_${t.tag}" class="estado-tanque">Sin lectura</div>
+  </div>`).join('');
+}
+function calcularNivel(i,el){
+ const t=TANQUES[i];el.value=el.value.replace(/\D/g,'').slice(0,3);
+ const pct=document.getElementById('pct_'+t.tag),lit=document.getElementById('lit_'+t.tag),est=document.getElementById('estado_'+t.tag);est.className='estado-tanque';
+ if(el.value===''){pct.textContent='—';lit.textContent='—';est.textContent='Sin lectura';return}
+ const cm=parseInt(el.value,10);
+ if(!Number.isInteger(cm)||cm<0||cm>ALTURA_UTIL_CM){pct.textContent='Fuera de rango';lit.textContent='—';est.textContent='Debe estar entre 0 y 740 cm';est.classList.add('invalido');return}
+ pct.textContent=(cm/ALTURA_UTIL_CM*100).toLocaleString('es-CL',{minimumFractionDigits:1,maximumFractionDigits:1})+' %';
+ lit.textContent=Math.round(cm*t.factor).toLocaleString('es-CL')+' L';est.textContent='Pendiente de guardar';
+}
+function guardarNiveles(){
+ const mediciones=[];
+ for(const t of TANQUES){
+  const el=document.getElementById('nivel_'+t.tag);if(!el||el.value==='')continue;
+  const cm=parseInt(el.value,10);
+  if(!Number.isInteger(cm)||cm<0||cm>ALTURA_UTIL_CM){mostrarMensaje('mensajeNiveles','Revise las lecturas: deben ser enteros entre 0 y 740 cm.',false);return}
+  mediciones.push({tipo:'NIVEL_TERRENO',estanque:t.tag,cm,porcentaje:Number((cm/ALTURA_UTIL_CM*100).toFixed(2)),factorLitrosCm:t.factor,litrosEstimados:Math.round(cm*t.factor)});
+ }
+ if(!mediciones.length){mostrarMensaje('mensajeNiveles','Ingrese al menos un nivel.',false);return}
+ encolar({modulo:'NIVELES_TANQUES',datos:mediciones});
+ mediciones.forEach(m=>{
+  const e=document.getElementById('estado_'+m.estanque);if(e){e.textContent='Guardado en cola · pendiente de sincronizar';e.className='estado-tanque guardado'}
+  const input=document.getElementById('nivel_'+m.estanque);if(input)input.value='';
+  document.getElementById('pct_'+m.estanque).textContent='—';document.getElementById('lit_'+m.estanque).textContent='—';
+ });
+ mostrarMensaje('mensajeNiveles',navigator.onLine?'✓ Mediciones guardadas. Sincronizando...':'✓ Guardadas en el teléfono. Pendientes de sincronizar.',navigator.onLine?true:'pendiente');
+}
+function encolar(parcial){
+ const lote={id:generarId(),fechaTelefono:new Date().toISOString(),...parcial};
+ const cola=leerCola();cola.push(lote);guardarCola(cola);if(navigator.onLine)sincronizarPendientes();
+}
+function resetearCola(){
+ const n=leerCola().length;
+ if(!n){mostrarMensaje('mensajeIntegradores','No hay pendientes para resetear.',true);return}
+ if(!confirm('Se eliminarán '+n+' registro(s) pendiente(s) SOLO de este dispositivo. Esto no borra datos ya enviados. ¿Continuar?'))return;
+ localStorage.removeItem(CLAVE_COLA);sincronizando=false;actualizarEstado();mostrarMensaje('mensajeIntegradores','✓ Pendientes locales eliminados.',true);
+}
+async function enviarApi(lote){
+ const baseUrl=lote&&lote.modulo==='NIVELES_TANQUES'?API_NIVELES:API_INTEGRADORES;
+ const url=baseUrl+'?lote='+encodeURIComponent(JSON.stringify(lote))+'&t='+Date.now();
+ const respuesta=await fetch(url,{method:'GET',cache:'no-store'});
+ let datos;try{datos=await respuesta.json()}catch(e){throw new Error('Respuesta inválida del servidor')}
+ if(!respuesta.ok||!datos||!datos.ok)throw new Error((datos&&datos.error)||('Error HTTP '+respuesta.status));
+ return datos;
+}
+async function sincronizarPendientes(){
+ if(sincronizando||!navigator.onLine)return;
+ let cola=leerCola();if(!cola.length){actualizarEstado();return}
+ sincronizando=true;actualizarEstado();const lote=cola[0];
+ try{
+  await enviarApi(lote);
+  cola=leerCola().filter(x=>x.id!==lote.id);guardarCola(cola);sincronizando=false;
+  if(lote.modulo==='INTEGRADORES')setTimeout(cargarUltimosIntegradores,900);
+  if(cola.length)sincronizarPendientes();else actualizarEstado();
+ }catch(e){
+  sincronizando=false;actualizarEstado();
+  const target=lote.modulo==='NIVELES_TANQUES'?'mensajeNiveles':'mensajeIntegradores';
+  mostrarMensaje(target,'Error sincronización: '+e.message,'pendiente');
+ }
+}
+function actualizarEstado(){
+ const n=leerCola().length,cuadro=document.getElementById('estadoConexion'),texto=document.getElementById('textoEstado');
+ if(sincronizando){cuadro.className='estado sincronizando';texto.textContent='SINCRONIZANDO — Pendientes: '+n}
+ else if(navigator.onLine){cuadro.className='estado online';texto.textContent='EN LÍNEA — Pendientes: '+n}
+ else{cuadro.className='estado offline';texto.textContent='SIN CONEXIÓN — Pendientes: '+n}
+}
+function actualizarReloj(){
+ const a=new Date();
+ document.getElementById('horaActual').textContent=String(a.getHours()).padStart(2,'0')+':'+String(a.getMinutes()).padStart(2,'0')+':'+String(a.getSeconds()).padStart(2,'0');
+ document.getElementById('fechaActual').textContent=a.toLocaleDateString('es-CL',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+}
+let contadorEasterEgg=0,tiempoUltimoToque=0;
+function activarEasterEgg(){const a=Date.now();if(a-tiempoUltimoToque>1500)contadorEasterEgg=0;tiempoUltimoToque=a;if(++contadorEasterEgg>=5){document.getElementById('acercaDe').style.display='flex';contadorEasterEgg=0}}
+function cerrarAcerca(){document.getElementById('acercaDe').style.display='none'}
+
+['resina','secuestrante','f900','emulsion1','emulsion2'].forEach(id=>{
+ const el=document.getElementById(id);if(el)el.addEventListener('input',actualizarCalculosIntegradores);
+});
+window.addEventListener('online',()=>{actualizarEstado();cargarUltimosIntegradores();sincronizarPendientes()});
+window.addEventListener('offline',actualizarEstado);
+window.addEventListener('load',()=>{
+ renderTanques();
+ aplicarUltimosEnPantalla('fallback');
+ cargarUltimosIntegradores();
+ actualizarReloj();setInterval(actualizarReloj,1000);
+ setInterval(()=>{if(navigator.onLine&&leerCola().length&&!sincronizando)sincronizarPendientes()},10000);
+ actualizarEstado();
+ try{const p=sessionStorage.getItem('integradores_panel');if(['integradores','niveles','estado'].includes(p))mostrarPanel(p)}catch(e){}
+ if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js');
+ if(navigator.onLine)setTimeout(sincronizarPendientes,1200);
+});
+</script>
+</body>
+</html>
