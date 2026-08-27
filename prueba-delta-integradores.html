@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#0d6b38">
+<title>Prueba Integradores Delta</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;width:100%;min-height:100%;background:#084c28;font-family:Arial,Helvetica,sans-serif}body{padding:0}#wrap{width:100%;max-width:540px;margin:0 auto;position:relative}.aviso{position:sticky;top:0;z-index:20;background:#fff5cc;border-bottom:1px solid #d7bd5a;color:#6e5700;padding:7px 10px;text-align:center;font-size:11px;font-weight:900}.frame-wrap{width:100%;height:calc(100vh - 29px)}iframe{display:block;width:100%;height:100%;border:0;background:#084c28}
+</style>
+</head>
+<body>
+<div id="wrap">
+  <div class="aviso">MODO PRUEBA · no reemplaza la app publicada</div>
+  <div class="frame-wrap"><iframe id="app" src="index.html?previewDelta=1" title="Integradores"></iframe></div>
+</div>
+<script>
+(function(){
+  const KEY='integradores_previos_preview_delta_v1';
+  const ids=['resina','secuestrante','f900','emulsion1','emulsion2'];
+  const nombres={resina:'Resina',secuestrante:'Secuestrante',f900:'F900',emulsion1:'Emulsión 1',emulsion2:'Emulsión 2'};
+  const frame=document.getElementById('app');
+  function fmt(n){return Number(n).toLocaleString('es-CL',{maximumFractionDigits:0});}
+  function previos(){try{return JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){return{}}}
+  function guardarPrevios(o){localStorage.setItem(KEY,JSON.stringify(o));}
+  function instalar(){
+    const w=frame.contentWindow,d=frame.contentDocument;
+    if(!d||!d.getElementById('panelIntegradores'))return;
+    const st=d.createElement('style');
+    st.textContent=`
+      #panelIntegradores .grupo{margin-bottom:0!important}
+      #panelIntegradores .grupo+.grupo{margin-top:11px!important}
+      .delta-info{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;padding:5px 4px 0;font-size:10.5px;line-height:1.2;color:#8a918d}
+      .delta-info .ant{color:#8b918e}.delta-info .ant b{color:#69736e}
+      .delta-info .dif{font-weight:900;color:#13804a}
+      .relacion-rs{margin:10px 0 4px;padding:9px 10px;border:1px solid #d8e4dc;border-radius:11px;background:#f5f8f6;text-align:center}
+      .relacion-rs .k{font-size:9px;color:#818b85;font-weight:900;text-transform:uppercase;letter-spacing:.4px}
+      .relacion-rs .v{margin-top:2px;font-size:22px;line-height:1.05;color:#0d6b38;font-weight:950}
+      .relacion-rs .n{margin-top:2px;font-size:10.5px;color:#68736d;font-weight:900}
+      #panelIntegradores .boton{margin-top:12px!important}
+      @media(max-width:420px){.delta-info{font-size:10px}.relacion-rs .v{font-size:21px}}
+    `;
+    d.head.appendChild(st);
+    const p=previos();
+    ids.forEach(id=>{
+      const input=d.getElementById(id); if(!input)return;
+      const grupo=input.closest('.grupo');
+      const info=d.createElement('div'); info.className='delta-info'; info.id='info_'+id;
+      info.innerHTML='<span class="ant">Anterior: <b id="ant_'+id+'">'+(p[id]!=null?fmt(p[id]):'Sin anterior')+'</b></span><span class="dif" id="dif_'+id+'">Δ —</span>';
+      grupo.appendChild(info);
+      input.addEventListener('input',actualizar);
+    });
+    const sec=d.getElementById('secuestrante')?.closest('.grupo');
+    if(sec){
+      const rel=d.createElement('div');rel.className='relacion-rs';rel.id='relacionRS';
+      rel.innerHTML='<div class="k">Relación del consumo</div><div class="v" id="relacionValor">— / —</div><div class="n">Resina / Secuestrante</div>';
+      sec.insertAdjacentElement('afterend',rel);
+    }
+    const boton=d.querySelector('#panelIntegradores .boton');
+    if(boton){
+      boton.textContent='GUARDAR PRUEBA';
+      boton.removeAttribute('onclick');
+      boton.addEventListener('click',function(){
+        const nuevos=previos(); let usados=0;
+        ids.forEach(id=>{const el=d.getElementById(id);const v=el?el.value.trim():'';if(/^\d+$/.test(v)){nuevos[id]=Number(v);usados++;}});
+        if(!usados){if(w.mostrarMensaje)w.mostrarMensaje('mensajeIntegradores','Debe ingresar al menos un valor.',false);return;}
+        guardarPrevios(nuevos);
+        ids.forEach(id=>{const el=d.getElementById(id);if(el)el.value='';const ant=d.getElementById('ant_'+id);if(ant)ant.textContent=nuevos[id]!=null?fmt(nuevos[id]):'Sin anterior';const dif=d.getElementById('dif_'+id);if(dif)dif.textContent='Δ —';});
+        const rv=d.getElementById('relacionValor');if(rv)rv.textContent='— / —';
+        if(w.mostrarMensaje)w.mostrarMensaje('mensajeIntegradores','✓ Prueba memorizada como valor anterior en este teléfono.',true);
+      });
+    }
+    actualizar();
+    function delta(id){
+      const el=d.getElementById(id),out=d.getElementById('dif_'+id),ant=p[id];
+      if(!el||!out)return null;
+      const txt=el.value.trim();
+      if(!/^\d+$/.test(txt)||ant==null){out.textContent='Δ —';return null;}
+      const val=Number(txt),dif=val-Number(ant);
+      out.textContent='Δ '+fmt(dif);
+      out.style.color=dif<0?'#b32626':'#13804a';
+      return dif;
+    }
+    function actualizar(){
+      const r=delta('resina'),s=delta('secuestrante');delta('f900');delta('emulsion1');delta('emulsion2');
+      const rv=d.getElementById('relacionValor');if(!rv)return;
+      if(r==null||s==null||r<0||s<0||(r+s)<=0){rv.textContent='— / —';return;}
+      const total=r+s,pr=r/total*100,ps=s/total*100;
+      rv.textContent=pr.toLocaleString('es-CL',{minimumFractionDigits:1,maximumFractionDigits:1})+'% / '+ps.toLocaleString('es-CL',{minimumFractionDigits:1,maximumFractionDigits:1})+'%';
+    }
+  }
+  frame.addEventListener('load',()=>setTimeout(instalar,150));
+})();
+</script>
+</body>
+</html>
