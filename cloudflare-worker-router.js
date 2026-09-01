@@ -56,6 +56,9 @@ export default {
       if (!target) return json({ok:false,error:'Backend no configurado para '+moduleName},500,cors);
 
       const upstream = new URL(target);
+      // El Apps Script histórico de Integradores solo procesa la PWA cuando api=guardar.
+      // Niveles usa su endpoint Mini Cierre y no debe recibir este parámetro.
+      if (moduleName === 'INTEGRADORES') upstream.searchParams.set('api','guardar');
       upstream.searchParams.set('lote',rawLot);
       upstream.searchParams.set('t',incoming.searchParams.get('t') || Date.now().toString());
 
